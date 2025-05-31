@@ -2,9 +2,9 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SplashScreen from "../pages/SplashScreen";
 import LoginScreen from "../pages/Login";
-import HomeScreen from "../pages/Home";
-import TabDashboard from "../(tabs)/_layout";
+import TabDashboard from "../(tabs)/drawer-navigator";
 import PaymentScreen from "../pages/Payment";
+import CashierScreen from "../pages/Cashier";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,10 +28,10 @@ export default function MainStackNavigator() {
         }}
       />
       <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+        name="Cashier"
+        component={CashierScreen}
         options={{
-          title: "Home",
+          title: "Kasir",
           headerShown: false,
         }}
       />

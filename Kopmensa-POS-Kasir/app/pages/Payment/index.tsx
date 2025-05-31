@@ -10,7 +10,6 @@ import { QrExtractor } from "@/app/utils/qr-extractor";
 import Toast from "react-native-toast-message";
 
 const PaymentScreen: React.FC<any> = ({ navigation }) => {
-  const [isBusy, setIsBusy] = useState(false);
   const [custName, setCustName] = useState("");
   const [custEmail, setCustEmail] = useState("");
   const [isScanning, setIsScanning] = useState(false);
@@ -110,8 +109,6 @@ const PaymentScreen: React.FC<any> = ({ navigation }) => {
       </TouchableOpacity>
 
       <BarcodeScannerModal visible={isScanning} onClose={() => setIsScanning(false)} onScanResult={handleScanResult} />
-
-      {isBusy && <LoadingScreen visible={isBusy} />}
     </View>
   );
 };

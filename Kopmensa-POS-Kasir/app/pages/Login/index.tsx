@@ -15,7 +15,6 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-  const [isBusy, setIsBusy] = useState<boolean>(false);
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
 
   useFocusEffect(
@@ -118,7 +117,6 @@ const LoginScreen: React.FC = () => {
       <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </TouchableOpacity>
-      <LoadingScreen visible={isBusy} />
     </View>
   );
 };

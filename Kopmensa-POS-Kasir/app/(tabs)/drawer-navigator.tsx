@@ -1,11 +1,12 @@
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerItem } from "@react-navigation/drawer";
-import React, { useState } from "react";
+import React from "react";
 import { Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import ProfileScreen from "../pages/Profile";
-import HomeScreen from "../pages/Home";
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
 import Gap from "@/components/Gap";
-import LoadingScreen from "@/components/LoadingScreen";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsLoading } from "../redux/LoadingReducer";
+import BottomTab from "./bottom-tab";
 
 interface User {
   name: string;
@@ -18,12 +19,12 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     name: "John Doe",
     imageUrl: "https://i.pinimg.com/564x/57/00/c0/5700c04197ee9a4372a35ef16eb78f4e.jpg",
   };
-  const [isBusy, setIsBusy] = useState(false);
+  const dispatch = useDispatch();
 
   const logout = () => {
-    setIsBusy(true);
+    dispatch(setIsLoading(true));
     navigation.navigate("LoginScreen");
-    setIsBusy(false);
+    dispatch(setIsLoading(false));
   };
 
   return (
@@ -36,8 +37,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
 
       <DrawerItemList {...props} />
       <DrawerItem label="Logout" onPress={logout} />
-
-      <LoadingScreen visible={isBusy} />
     </DrawerContentScrollView>
   );
 };
@@ -46,9 +45,9 @@ const Drawer = createDrawerNavigator();
 
 const TabDashboard: React.FC = () => {
   return (
-    <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />}>
+    <Drawer.Navigator initialRouteName="Dashboard" drawerContent={(props) => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Dashboard" component={BottomTab} options={{ headerShown: false }} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
-      <Drawer.Screen name="Home" component={HomeScreen} />
     </Drawer.Navigator>
   );
 };

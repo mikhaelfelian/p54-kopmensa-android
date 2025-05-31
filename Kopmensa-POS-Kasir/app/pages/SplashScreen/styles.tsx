@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -10,9 +11,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   image: {
-    width: "40%",
-    height: "35%",
-    flex: 1,
+    width: width * 0.3,
   },
   text: {
     fontSize: 24,

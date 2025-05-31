@@ -7,8 +7,6 @@ import Gap from "@/components/Gap";
 import { Button } from "react-native-paper";
 
 const ProfileScreen: React.FC<any> = ({ navigation }) => {
-  const [isBusy, setIsBusy] = useState(false);
-
   let userData = {
     name: "Susilo Bambang",
     email: "susilolilo@noemail.com",
@@ -49,8 +47,6 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-
-      {isBusy && <LoadingScreen visible={isBusy} />}
     </View>
   );
 };
