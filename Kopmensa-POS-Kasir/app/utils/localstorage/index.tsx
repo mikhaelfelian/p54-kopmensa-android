@@ -36,3 +36,12 @@ export const updateData = async (key: string, newValue: any): Promise<void> => {
     console.log(e);
   }
 };
+
+export const clearAllData = async (): Promise<void> => {
+  try {
+    await AsyncStorage.clear();
+    console.log("All AsyncStorage data cleared.");
+  } catch (e) {
+    console.log("Failed to clear AsyncStorage:", e);
+  }
+};

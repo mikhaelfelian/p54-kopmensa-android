@@ -8,7 +8,7 @@ const { apiUrl } = getEnvVars();
 const getToken = async (): Promise<string | null> => {
   try {
     let token = "";
-    await getData("token").then((response) => {
+    await getData("authToken").then((response) => {
       if (response != null) {
         token = response;
       }

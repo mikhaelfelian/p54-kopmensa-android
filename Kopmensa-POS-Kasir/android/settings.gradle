@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'Merchant Seller App'
+rootProject.name = 'Kopmensa Pos Kasir'
 
 dependencyResolutionManagement {
   versionCatalogs {

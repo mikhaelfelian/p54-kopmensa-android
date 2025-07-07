@@ -5,8 +5,8 @@
 ## 🔧 Technologies Used
 * Backend: [CodeIgniter 4](https://codeigniter.com/)
 * Database: MySQL
-* Android Cashier App: Java/Kotlin (Android Studio)
-* Android Member App: Java/Kotlin (Android Studio)
+* Android Cashier App: React Native/Typescript
+* Android Member App: React Native/Typescript
 
 ## 🧩 Main Features
 
@@ -27,7 +27,7 @@
 ## 🧑‍💻 Contributors
 * [Mikhael Felian](https://github.com/mikhaelfelian)
 * Alfian Hari
-* Reza Hariz
+* Reza Haris
 
 ## 🏗️ Development Status
 🚧 This project is under active development. Contributions for feature enhancements, reports, and system integrations are welcome.

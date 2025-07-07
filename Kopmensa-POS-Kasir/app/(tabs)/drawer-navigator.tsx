@@ -7,6 +7,9 @@ import Gap from "@/components/Gap";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsLoading } from "../redux/LoadingReducer";
 import BottomTab from "./bottom-tab";
+import { Logout } from "../services/session";
+import { clearAllData } from "../utils/localstorage";
+import { CommonActions } from "@react-navigation/native";
 
 interface User {
   name: string;
@@ -21,10 +24,24 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   };
   const dispatch = useDispatch();
 
-  const logout = () => {
-    dispatch(setIsLoading(true));
-    navigation.navigate("LoginScreen");
-    dispatch(setIsLoading(false));
+  const logout = async () => {
+    try {
+      dispatch(setIsLoading(true));
+      await Logout().finally(async () => {
+        await clearAllData();
+
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "LoginScreen" }],
+          })
+        );
+      });
+    } catch (error) {
+      console.error("logout : " + error);
+    } finally {
+      dispatch(setIsLoading(false));
+    }
   };
 
   return (

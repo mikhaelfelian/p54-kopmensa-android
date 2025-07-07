@@ -9,7 +9,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.rsi.rsimerchant"
+      "package": "com.rsi.rsicashier"
     },
     "plugins": ["expo-router"],
     "experiments": {

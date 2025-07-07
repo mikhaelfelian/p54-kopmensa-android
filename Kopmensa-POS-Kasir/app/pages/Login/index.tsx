@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { View, Image, TouchableOpacity, BackHandler } from "react-native";
 import { TextInput, Button, Text } from "react-native-paper";
-import { login } from "../../services/session";
+import { Login } from "../../services/session";
 import styles from "./styles";
 import { storeData } from "../../utils/localstorage";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import LoadingScreen from "../../../components/LoadingScreen";
 import Gap from "../../../components/Gap";
-import { isValidEmail } from "../../utils/checker";
+import { useDispatch } from "react-redux";
+import { toUrlEncoded } from "@/app/utils/converter";
+import { setIsLoading } from "@/app/redux/LoadingReducer";
+import Toast from "react-native-toast-message";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<any>();
-  const [email, setEmail] = useState<string>("");
+  const dispatch = useDispatch();
+  const [emailOrUsername, setEmailOrUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
+  const [emailOrUsernameError, setEmailOrUsernameError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
 
@@ -33,43 +36,58 @@ const LoginScreen: React.FC = () => {
   );
 
   const handleLogin = async () => {
-    checkForm();
+    try {
+      checkForm();
 
-    // if (isValidForm) {
-    //   try {
-    //     setIsBusy(true);
-    //     const bodyParameters = {
-    //       userNameOrEmailAddress: email,
-    //       password: password,
-    //     };
+      if (isValidForm) {
+        const _param = {
+          user: emailOrUsername,
+          pass: password,
+        };
+        const param = toUrlEncoded(_param);
 
-    //     const param = JSON.stringify(bodyParameters);
-
-    //     await login(param)
-    //       .then(async (response) => {
-    //         if (response != null) {
-    //           await storeData("userData", response?.result);
-    //           navigation.navigate("TabDashboard");
-    //         }
-    //       })
-    //       .finally(() => setIsBusy(false));
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // }
-    navigation.navigate("TabDashboard");
+        dispatch(setIsLoading(true));
+        await Login(param)
+          .then(async (response) => {
+            if (response != null && response?.token != null && response?.data != null) {
+              await storeData("authToken", response?.token);
+              await storeData("userData", response?.data).then(() => navigation.navigate("TabDashboard"));
+            } else {
+              Toast.show({
+                text1: "Login failed!",
+                text2: "Please try again later.",
+                type: "error",
+              });
+            }
+          })
+          .catch((error) => {
+            console.log("Error Response:", error.response.data);
+            Toast.show({
+              text1: "Login failed!",
+              text2: error.response.data ?? "Please try again later.",
+              type: "error",
+            });
+          });
+      }
+    } catch (error) {
+      console.error("handleLogin : " + error);
+      Toast.show({
+        text1: "Login failed!",
+        text2: "Please try again later.",
+        type: "error",
+      });
+    } finally {
+      dispatch(setIsLoading(false));
+    }
   };
 
   const checkForm = () => {
     setIsValidForm(true);
-    setEmailError("");
+    setEmailOrUsernameError("");
     setPasswordError("");
 
-    if (!email) {
-      setEmailError("Email is required.");
-      setIsValidForm(false);
-    } else if (!isValidEmail(email)) {
-      setEmailError("Please enter a valid email.");
+    if (!emailOrUsername) {
+      setEmailOrUsernameError("Email or Username is required.");
       setIsValidForm(false);
     }
 
@@ -89,14 +107,14 @@ const LoginScreen: React.FC = () => {
       <TextInput
         label="Email"
         mode="outlined"
-        value={email}
+        value={emailOrUsername}
         onChangeText={(text) => {
-          setEmail(text);
+          setEmailOrUsername(text);
           checkForm();
         }}
-        error={!!emailError}
+        error={!!emailOrUsernameError}
       />
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+      {emailOrUsernameError ? <Text style={styles.errorText}>{emailOrUsernameError}</Text> : null}
       <Gap height={10} />
       <TextInput
         label="Password"

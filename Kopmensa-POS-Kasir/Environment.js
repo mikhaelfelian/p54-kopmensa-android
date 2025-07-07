@@ -1,5 +1,5 @@
-const baseAddress = "questil.com";
-const apiUrl = `https://questil.com/EWasteDevAPI/api`;
+const baseAddress = "dev.kopmensa.com";
+const apiUrl = `https://${baseAddress}`;
 
 const ENV = {
   dev: {
@@ -7,11 +7,11 @@ const ENV = {
     appUrl: `exp://${baseAddress}:19000`,
     oAuthConfig: {
       issuer: apiUrl,
-      clientId: "rsi_merchant",
-      scope: "offline_access rsi_merchant",
+      clientId: "rsi_cashier",
+      scope: "offline_access rsi_cashier",
     },
     localization: {
-      defaultResourceName: "rsi_merchant",
+      defaultResourceName: "rsi_cashier",
     },
   },
   prod: {
@@ -19,11 +19,11 @@ const ENV = {
     appUrl: `exp://${baseAddress}:19000`,
     oAuthConfig: {
       issuer: `http://${baseAddress}:44369`,
-      clientId: "rsi_merchant",
-      scope: "offline_access rsi_merchant",
+      clientId: "rsi_cashier",
+      scope: "offline_access rsi_cashier",
     },
     localization: {
-      defaultResourceName: "rsi_merchant",
+      defaultResourceName: "rsi_cashier",
     },
   },
 };

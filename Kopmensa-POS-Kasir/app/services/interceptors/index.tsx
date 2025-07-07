@@ -1,4 +1,7 @@
+import { clearAllData } from "@/app/utils/localstorage";
+import { navigateGlobal } from "@/app/utils/navigate-global";
 import { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from "axios";
+import Toast from "react-native-toast-message";
 
 export default class InterceptorManager {
   static attachTokenInterceptor(axiosInstance: AxiosInstance, getToken: () => Promise<string | null>): void {
@@ -21,8 +24,25 @@ export default class InterceptorManager {
       (response: AxiosResponse) => {
         return response;
       },
-      (error) => {
-        console.error("Response Error:", error);
+      async (error) => {
+        try {
+          if (error.response?.status === 401) {
+            console.warn("Unauthorized: Token might be expired or invalid.");
+
+            await clearAllData().finally(() => {
+              Toast.show({
+                text1: "Session expired!",
+                text2: `Please login again with your account.`,
+                type: "error",
+              });
+
+              navigateGlobal("LoginScreen");
+            });
+          }
+        } catch (error) {
+          console.error("attachResponseInterceptor = " + error);
+        }
+
         return Promise.reject(error);
       }
     );

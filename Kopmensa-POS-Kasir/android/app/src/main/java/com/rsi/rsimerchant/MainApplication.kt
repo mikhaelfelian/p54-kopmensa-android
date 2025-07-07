@@ -1,4 +1,4 @@
-package com.rsi.rsimerchant
+package com.rsi.rsicashier
 
 import android.app.Application
 import android.content.res.Configuration

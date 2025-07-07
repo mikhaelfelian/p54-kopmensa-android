@@ -327,6 +327,12 @@ const labelStyles = StyleSheet.create({
     fontWeight: "400",
     fontFamily: "Poppins-Regular",
   },
+  mediumDarkLabel500: {
+    fontSize: fontSize.normal,
+    color: colors.dark,
+    fontWeight: "500",
+    fontFamily: "Poppins-Medium",
+  },
   mediumDarkLabel600: {
     fontSize: fontSize.medium,
     color: colors.dark,
@@ -357,8 +363,20 @@ const labelStyles = StyleSheet.create({
     fontWeight: "700",
     fontFamily: "Poppins-Bold",
   },
+  mediumLightLabel700: {
+    fontSize: fontSize.medium,
+    color: colors.light,
+    fontWeight: "700",
+    fontFamily: "Poppins-Bold",
+  },
 
   // Large Label Style
+  largeDarkLabel400: {
+    fontSize: fontSize.large,
+    color: colors.dark,
+    fontWeight: "400",
+    fontFamily: "Poppins-Regular",
+  },
   largePrimaryLabel600: {
     fontSize: fontSize.large,
     color: colors.primary,
