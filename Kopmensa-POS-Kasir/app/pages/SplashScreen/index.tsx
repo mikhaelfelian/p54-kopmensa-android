@@ -3,9 +3,8 @@ import { View, Image, Text } from "react-native";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { expo } from "../../../app.json";
-import { getData, removeData, updateData } from "../../utils/localstorage";
+import { getData } from "../../utils/localstorage";
 import NetInfo from "@react-native-community/netinfo";
-import { RefreshToken } from "@/app/services/session";
 import Gap from "@/components/Gap";
 
 const SplashScreen: React.FC = () => {
@@ -19,11 +18,10 @@ const SplashScreen: React.FC = () => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         const unsubscribe = NetInfo.addEventListener(async (state) => {
           if (state.isConnected) {
-            await checkToken();
-            const response = await getData("userData");
-            console.log(response);
-            if (response && response.accessToken) {
-              navigation.navigate("Home");
+            const response = await getData("authToken");
+
+            if (response != null) {
+              navigation.navigate("TabDashboard");
             } else {
               navigation.navigate("LoginScreen");
             }
@@ -38,27 +36,6 @@ const SplashScreen: React.FC = () => {
     };
     fetchData();
   }, [navigation]);
-
-  const checkToken = async () => {
-    const data = await getData("userData");
-    if (data && data.accessToken) {
-      const _data = data;
-
-      try {
-        const response = await RefreshToken(_data.refreshToken);
-        if (response && response.accessToken) {
-          _data.accessToken = response.result.accessToken;
-          await updateData("userData", _data);
-        } else {
-          await removeData("userData");
-        }
-      } catch {
-        await removeData("userData");
-      }
-    } else {
-      await removeData("userData");
-    }
-  };
 
   return (
     <View style={styles.container}>

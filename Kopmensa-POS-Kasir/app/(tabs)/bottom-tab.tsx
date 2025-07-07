@@ -68,7 +68,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
 
 const BottomTab: React.FC = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={(props) => <CustomTabBar {...props} />}>
+    <Tab.Navigator initialRouteName="CashierScreen" screenOptions={{ headerShown: false }} tabBar={(props) => <CustomTabBar {...props} />}>
       <Tab.Screen name="DrawerButton" component={DummyScreen} options={{ tabBarLabel: () => null }} />
       <Tab.Screen
         name="CashierScreen"
