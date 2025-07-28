@@ -5,12 +5,13 @@ import LoginScreen from "../pages/Login";
 import TabDashboard from "../(tabs)/drawer-navigator";
 import PaymentScreen from "../pages/Payment";
 import CashierScreen from "../pages/Cashier";
+import WebViewScreen from "../pages/WebView";
 
 const Stack = createNativeStackNavigator();
 
 export default function MainStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="SplashScreen">
+    <Stack.Navigator initialRouteName="WebViewScreen">
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
@@ -44,6 +45,14 @@ export default function MainStackNavigator() {
         }}
       />
       <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+      <Stack.Screen
+        name="WebViewScreen"
+        component={WebViewScreen}
+        options={{
+          title: "",
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }

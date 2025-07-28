@@ -1,129 +1,171 @@
-import { StyleSheet } from 'react-native';
+import { colors } from "@/constants/constants";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    label: {
-        fontSize: 18,
-    },
-    headerContainer: {
-        width: '100%',
-        height: 435,
-        position: 'relative',
-    },
-    headerBg: {
-        paddingTop: 50,
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#b1cfe3',
-    },
-    syncIcon: {
-        alignItems: 'flex-end',
-        paddingRight: 16,
-    },
-    headerTitle: {
-        marginTop: 15,
-        marginLeft: 20,
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'white',
-    },
-    headerSubTitle: {
-        marginLeft: 20,
-        fontSize: 14,
-        color: 'white',
-    },
-    ivtContainer: {
-        marginTop: 150,
-        width: '100%',
-        height: '100%',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        paddingTop: 10,
-        position: 'absolute',
-        backgroundColor: 'white',
-    },
-    ivtSummaryContainer: {
-        marginTop: 8,
-        marginHorizontal: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end'
-    },
-    ivtProgressBar: {
-        marginTop: 10,
-        marginHorizontal: 20,
-        flexDirection: 'row',
-        height: 10,
-        backgroundColor: '#eee',
-        borderRadius: 10,
-        overflow: 'hidden',
-        borderWidth: 1,
-        borderColor: '#f2f2f2',
-    },
-    ivtProgressSection: {
-        height: '100%',
-    },
-    ivtCategoryContainer: {
-        flexDirection: 'row',
-        marginTop: 10,
-        marginHorizontal: 20,
-    },
-    ivtCategoryLabel: {
-        marginRight: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    ivtExpiredContainer: {
-        marginTop: 20,
-        paddingHorizontal: 16,
-        paddingTop: 10,
-        paddingBottom: 15,
-        backgroundColor: '#e4eef5',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    ivtExpiredLabel: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end'
-    },
-    bodyContainer: {
-        width: '100%',
-        paddingBottom: 50,
-    },
-    wasteInOutContainer: {
-        paddingHorizontal: 16,
-        paddingVertical: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    wasteInOutButton: {
-        paddingVertical: 25,
-        elevation: 3,
-        borderRadius: 10,
-        backgroundColor: 'white',
-        width: '48%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-    },
-    wasteInOutButtonText: {
-        marginTop: 5,
-    },
-    activityContainer: {
-        padding: 16,
-    },
-    activityInOut: {
-        marginTop: 5,
-        flexDirection: 'row',
-        width: '50%',
-        alignItems: 'center',
-    }
-
+  container: {
+    flexDirection: "row",
+    flex: 1,
+    backgroundColor: colors.light,
+  },
+  leftPanel: {
+    flex: 1,
+    padding: 10,
+  },
+  rightPanel: {
+    flex: 1,
+    padding: 15,
+    justifyContent: "space-between",
+  },
+  filterBoxContainer: {
+    height: 40,
+    borderWidth: 1,
+    borderColor: colors.gray4,
+    borderRadius: 6,
+    paddingLeft: 12,
+    marginBottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  itemRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderColor: "#eaeaea",
+  },
+  imagePlaceholder: {
+    width: 40,
+    height: 40,
+    backgroundColor: "#c4c4c4",
+    borderRadius: 5,
+    marginRight: 10,
+  },
+  itemName: {
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 12,
+  },
+  stockBadge: {
+    backgroundColor: "#d4f3dc",
+    alignSelf: "flex-start",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 5,
+    marginTop: 4,
+  },
+  stockText: {
+    color: "green",
+    fontSize: 10,
+  },
+  price: {
+    fontWeight: "bold",
+    fontSize: 14,
+    textAlign: "right",
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 10,
+    flexWrap: "wrap",
+  },
+  pageButton: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 2,
+  },
+  activePage: {
+    backgroundColor: "#1d70b8",
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 18,
+    marginBottom: 15,
+  },
+  instructionBox: {
+    backgroundColor: "#d8f0d3",
+    padding: 12,
+    borderRadius: 8,
+  },
+  instructionTitle: {
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  payButton: {
+    backgroundColor: "#7ac66f",
+    padding: 14,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  payButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  eraseBtnContainer: {
+    backgroundColor: colors.gray1,
+    borderRadius: width * 0.02 * 2,
+    justifyContent: "center",
+    padding: 5,
+  },
+  instructionText: {
+    fontSize: 14,
+    color: "#3b6e3a",
+    flex: 1,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    paddingTop: 20,
+    paddingBottom: 5,
+    justifyContent: "flex-end",
+  },
+  rightTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  tableHeader: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    paddingVertical: 6,
+    backgroundColor: "#f9f9f9",
+  },
+  headerCell: {
+    flex: 1,
+    fontWeight: "bold",
+  },
+  rowCell: {
+    flex: 1,
+  },
+  tableRow: {
+    flexDirection: "row",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderColor: "#eaeaea",
+  },
+  borderSeparator: {
+    borderWidth: 0.5,
+    height: "100%",
+    borderColor: colors.gray4,
+  },
+  plusBtn: {
+    backgroundColor: colors.green2,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+  },
+  dividerHorizontal: {
+    borderWidth: 0.5,
+    width: "100%",
+    borderColor: colors.gray4,
+  },
 });
 
 export default styles;
