@@ -5,13 +5,32 @@
     "version": "1.0.0",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "icon": "./assets/images/logo-white-bg.png",
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "package": "com.rsi.rsicashier"
+      "package": "com.rezadev.rsicashier",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/logo-white-bg.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 35
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     }

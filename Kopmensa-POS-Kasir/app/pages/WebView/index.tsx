@@ -13,8 +13,9 @@ const WebViewScreen: React.FC = () => {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <WebView
+        showsVerticalScrollIndicator={false}
         ref={webviewRef}
-        source={{ uri: "https://dev.kopmensa.com/dashboard" }}
+        source={{ uri: "https://dev.kopmensa.com/auth/login-kasir" }}
         style={{
           width: width,
           height: height,
