@@ -3,15 +3,20 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SplashScreen from "../pages/SplashScreen";
 import LoginScreen from "../pages/Login";
 import TabDashboard from "../(tabs)/drawer-navigator";
-import PaymentScreen from "../pages/Payment";
-import CashierScreen from "../pages/Cashier";
 import WebViewScreen from "../pages/WebView";
+import DashboardScreen from "../pages/Dashboard";
+import ProfileScreen from "../pages/Profile";
+import MerkScreen from "../pages/Merk";
+import CategoryScreen from "../pages/Category";
+import VariantScreen from "../pages/Variant";
+import ItemScreen from "../pages/Item";
+import UnitScreen from "../pages/Unit";
 
 const Stack = createNativeStackNavigator();
 
 export default function MainStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="WebViewScreen">
+    <Stack.Navigator initialRouteName="SplashScreen">
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
@@ -29,14 +34,6 @@ export default function MainStackNavigator() {
         }}
       />
       <Stack.Screen
-        name="Cashier"
-        component={CashierScreen}
-        options={{
-          title: "Kasir",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="TabDashboard"
         component={TabDashboard}
         options={{
@@ -44,13 +41,62 @@ export default function MainStackNavigator() {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
       <Stack.Screen
         name="WebViewScreen"
         component={WebViewScreen}
         options={{
           title: "",
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="DashboardScreen"
+        component={DashboardScreen}
+        options={{
+          title: "",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          title: "",
+        }}
+      />
+      <Stack.Screen
+        name="MerkScreen"
+        component={MerkScreen}
+        options={{
+          title: "Merk",
+        }}
+      />
+      <Stack.Screen
+        name="CategoryScreen"
+        component={CategoryScreen}
+        options={{
+          title: "Kategori",
+        }}
+      />
+      <Stack.Screen
+        name="VariantScreen"
+        component={VariantScreen}
+        options={{
+          title: "Varian",
+        }}
+      />
+      <Stack.Screen
+        name="ItemScreen"
+        component={ItemScreen}
+        options={{
+          title: "Item",
+        }}
+      />
+      <Stack.Screen
+        name="UnitScreen"
+        component={UnitScreen}
+        options={{
+          title: "Satuan",
         }}
       />
     </Stack.Navigator>

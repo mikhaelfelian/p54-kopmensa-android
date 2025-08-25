@@ -41,11 +41,14 @@ export const GetCategory = async (page: string) => {
   return data;
 };
 
-export const GetOutlets = async (page: string) => {
+export const GetOutlets = async (page: string, perPage: string) => {
   const params = new URLSearchParams();
 
   if (page?.length > 0) {
     params.append("page", page);
+  }
+  if (perPage?.length > 0) {
+    params.append("per_page", perPage);
   }
 
   const url = `/api/pos/outlet?${params.toString()}`;

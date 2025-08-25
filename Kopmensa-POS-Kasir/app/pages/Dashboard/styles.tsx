@@ -1,0 +1,251 @@
+import { StyleSheet, Dimensions } from "react-native";
+import { colors } from "@/constants/constants";
+
+const { width } = Dimensions.get("window");
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.light,
+  },
+  scrollContent: {
+    padding: 12,
+  },
+  header: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 12,
+  },
+  statsTopWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  statCard: {
+    width: width / 2 - 18,
+    backgroundColor: colors.light,
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  statIconWrapper: {
+    borderRadius: 8,
+    padding: 8,
+    marginRight: 10,
+  },
+  statTitle: {
+    fontSize: 12,
+    color: colors.dark,
+  },
+  statValue: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  card: {
+    backgroundColor: colors.light,
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  cardTitle: {
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  chartContainer: {
+    height: 200,
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+  subTitle: {
+    fontWeight: "bold",
+    marginTop: 6,
+    marginBottom: 4,
+  },
+  textLine: {
+    fontSize: 13,
+    marginBottom: 2,
+  },
+  bold: {
+    fontWeight: "bold",
+  },
+  summaryWrapper: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+  },
+  summaryBox: {
+    flex: 1,
+    backgroundColor: colors.light,
+    borderRadius: 10,
+    padding: 10,
+    margin: 4,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  summaryUp: {
+    color: colors.green,
+    fontSize: 12,
+  },
+  summaryDown: {
+    color: colors.red,
+    fontSize: 12,
+  },
+  summaryValue: {
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  summaryLabel: {
+    fontSize: 11,
+    textAlign: "center",
+    color: colors.dark,
+  },
+  chartWrapper: {
+    height: 240,
+    marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  cardRow: {
+    flexDirection: "row",
+    marginTop: 12,
+  },
+  donutWrapper: {
+    flex: 1,
+    backgroundColor: colors.light,
+    borderRadius: 10,
+    padding: 12,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  donutCenter: {
+    fontSize: 11,
+    textAlign: "center",
+    color: colors.dark,
+  },
+  donutValue: {
+    marginTop: 6,
+    fontWeight: "bold",
+    fontSize: 13,
+    color: colors.green,
+    textAlign: "center",
+  },
+  rightCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 8,
+  },
+  rightCardTitle: {
+    fontSize: 12,
+    color: colors.light,
+  },
+  rightCardValue: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: colors.light,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+    flexWrap: "wrap",
+  },
+  tableRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 6,
+    borderBottomWidth: 0.5,
+    borderColor: "#eee",
+  },
+  tableRowHeader: {
+    flexDirection: "row",
+    paddingVertical: 8,
+    paddingHorizontal: 6,
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#f1f1f1",
+  },
+  tableHeader: {
+    fontWeight: "bold",
+    fontSize: 12,
+    color: colors.dark,
+  },
+  tableCell: {
+    fontSize: 12,
+    color: colors.dark,
+  },
+  tableCellGreen: {
+    fontSize: 12,
+    color: colors.green,
+    fontWeight: "bold",
+  },
+  linkText: {
+    marginTop: 8,
+    color: colors.gray4,
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  badgeGreen: {
+    backgroundColor: colors.green,
+    color: colors.light,
+    fontSize: 11,
+    fontWeight: "600",
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+    overflow: "hidden",
+    textAlign: "center",
+    minWidth: 50,
+  },
+  badgeRed: {
+    backgroundColor: colors.red,
+    color: colors.light,
+    fontSize: 11,
+    fontWeight: "600",
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+    overflow: "hidden",
+    textAlign: "center",
+    minWidth: 50,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  btn: {
+    borderRadius: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginRight: 8,
+  },
+  btnText: {
+    color: colors.light,
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+});
+
+export default styles;

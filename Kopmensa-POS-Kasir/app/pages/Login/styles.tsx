@@ -32,6 +32,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 5,
   },
+  outletWrapper: {
+    borderWidth: 0.7,
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });
 
 export default styles;

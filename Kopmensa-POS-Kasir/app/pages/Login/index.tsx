@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Image, TouchableOpacity, BackHandler } from "react-native";
 import { TextInput, Button, Text } from "react-native-paper";
 import { Login } from "../../services/session";
@@ -10,6 +10,13 @@ import { useDispatch } from "react-redux";
 import { toUrlEncoded } from "@/app/utils/converter";
 import { setIsLoading } from "@/app/redux/LoadingReducer";
 import Toast from "react-native-toast-message";
+import labelStyles from "@/constants/label-styles";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { colors } from "@/constants/constants";
+import { GetOutlets } from "@/app/services/inventory";
+import BottomSheet from "@devvie/bottom-sheet";
+import BottomSheetListing from "@/components/BottomSheetListing";
+import { OutletItem } from "@/app/models/outlet";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -19,6 +26,9 @@ const LoginScreen: React.FC = () => {
   const [emailOrUsernameError, setEmailOrUsernameError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
+  const [selectedOutlet, setSelectedOutlet] = useState<OutletItem>();
+  const [outletList, setOutletList] = useState<OutletItem[]>([]);
+  const outletSheetRef = useRef<React.ElementRef<typeof BottomSheet>>(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -35,6 +45,10 @@ const LoginScreen: React.FC = () => {
     }, [])
   );
 
+  useEffect(() => {
+    getOutlets();
+  }, []);
+
   const handleLogin = async () => {
     try {
       checkForm();
@@ -43,6 +57,7 @@ const LoginScreen: React.FC = () => {
         const _param = {
           user: emailOrUsername,
           pass: password,
+          outlet: selectedOutlet?.id,
         };
         const param = toUrlEncoded(_param);
 
@@ -81,6 +96,23 @@ const LoginScreen: React.FC = () => {
     }
   };
 
+  const getOutlets = async () => {
+    try {
+      dispatch(setIsLoading(true));
+
+      let page = "1";
+      let perPage = "10";
+
+      await GetOutlets(page, perPage).then((response) => {
+        setOutletList(response?.outlets ?? []);
+      });
+    } catch (error) {
+      console.error("getOutlets : ", error);
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+
   const checkForm = () => {
     setIsValidForm(true);
     setEmailOrUsernameError("");
@@ -108,6 +140,7 @@ const LoginScreen: React.FC = () => {
         label="Email"
         mode="outlined"
         value={emailOrUsername}
+        style={{ zIndex: 0 }}
         onChangeText={(text) => {
           setEmailOrUsername(text);
           checkForm();
@@ -121,6 +154,7 @@ const LoginScreen: React.FC = () => {
         mode="outlined"
         secureTextEntry
         value={password}
+        style={{ zIndex: 0 }}
         onChangeText={(text) => {
           setPassword(text);
           checkForm();
@@ -128,13 +162,30 @@ const LoginScreen: React.FC = () => {
         error={!!passwordError}
       />
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-      <Gap height={16} />
+      <Gap height={14} />
+      <TouchableOpacity style={styles.outletWrapper} onPress={() => outletSheetRef.current.open()}>
+        <Text style={labelStyles.normalGray4Label500}>{selectedOutlet != null ? selectedOutlet?.nama : "Select Outlet"}</Text>
+        <FontAwesome6 name={"sort-down"} color={colors.gray4} size={20} />
+      </TouchableOpacity>
+      <Gap height={20} />
       <Button mode="contained" style={styles.button} labelStyle={styles.buttonText} onPress={handleLogin}>
         Login
       </Button>
       <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </TouchableOpacity>
+
+      <BottomSheetListing
+        sheetRef={outletSheetRef}
+        title={"Outlets"}
+        isSearchQuery={false}
+        listItem={outletList}
+        itemKey={["nama"]}
+        onSelectItem={async (item) => {
+          setSelectedOutlet(item);
+          outletSheetRef.current.close();
+        }}
+      />
     </View>
   );
 };
