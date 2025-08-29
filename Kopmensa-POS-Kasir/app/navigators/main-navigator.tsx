@@ -5,7 +5,6 @@ import LoginScreen from "../pages/Login";
 import TabDashboard from "../(tabs)/drawer-navigator";
 import WebViewScreen from "../pages/WebView";
 import DashboardScreen from "../pages/Dashboard";
-import ProfileScreen from "../pages/Profile";
 import MerkScreen from "../pages/Merk";
 import CategoryScreen from "../pages/Category";
 import VariantScreen from "../pages/Variant";
@@ -55,13 +54,6 @@ export default function MainStackNavigator() {
         options={{
           title: "",
           headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{
-          title: "",
         }}
       />
       <Stack.Screen
