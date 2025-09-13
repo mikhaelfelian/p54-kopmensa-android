@@ -194,10 +194,10 @@ const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
               <FontAwesome name="bar-chart" size={16} color="#fff" />
               <Text style={styles.quickText}> Laporan</Text>
             </TouchableOpacity> */}
-            <TouchableOpacity style={[styles.quickBtn, { backgroundColor: "#ffc107" }]} onPress={() => navigation.navigate("ReturnFundsScreen")}>
+            {/* <TouchableOpacity style={[styles.quickBtn, { backgroundColor: "#ffc107" }]} onPress={() => navigation.navigate("ReturnFundsScreen")}>
               <FontAwesome name="undo" size={16} color="#fff" />
               <Text style={styles.quickText}> Retur</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

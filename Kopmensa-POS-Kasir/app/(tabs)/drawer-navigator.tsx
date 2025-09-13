@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Text, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
 import Gap from "@/components/Gap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsLoading } from "../redux/LoadingReducer";
 import { Logout } from "../services/session";
 import { clearAllData } from "../utils/localstorage";
@@ -13,6 +13,10 @@ import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "@/constants/constants";
 import { GetProfile } from "../services/inventory";
 import { Profile } from "../models/profile";
+import { Shift } from "../models/shift";
+import { GetShiftList } from "../services/shift";
+import { RootState } from "../redux/store";
+import Toast from "react-native-toast-message";
 
 interface User {
   name: string;
@@ -26,10 +30,38 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   const [openReturnSales, setOpenReturnSales] = useState(false);
   const [userData, setUserData] = useState<Profile>();
   const dispatch = useDispatch();
+  const selectedOutlet = useSelector((state: RootState) => state.selectedOutlet.selected);
 
   useEffect(() => {
     getProfile();
   }, []);
+
+  const getShiftList = async () => {
+    try {
+      dispatch(setIsLoading(true));
+      const outletID = selectedOutlet ? selectedOutlet.id.toString() : "";
+      let page = 1;
+      let allShifts: Shift[] | ((prevState: Shift[]) => Shift[]) = [];
+
+      while (true) {
+        const response = await GetShiftList(outletID, page.toString());
+
+        if (!response?.items || response.items.length === 0) {
+          break;
+        }
+
+        allShifts = [...allShifts, ...response.items];
+
+        page++;
+      }
+
+      return allShifts;
+    } catch (error) {
+      console.error("getShiftList error", error);
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
 
   const logout = async () => {
     try {
@@ -82,25 +114,61 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
 
       {openCashier && (
         <View style={styles.dropdownList}>
-          <DrawerItem label="Kasir" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("CashierScreen")} icon={() => <MaterialCommunityIcons name="point-of-sale" size={18} color="#666" />} />
-          <DrawerItem label="Input Penjualan" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("SaleInputScreen")} icon={() => <MaterialCommunityIcons name="plus" size={18} color="#666" />} />
-          <DrawerItem label="Data Penjualan Kasir" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("DataSalesCashierScreen")} icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={18} color="#666" />} />
+          <DrawerItem
+            label="Kasir"
+            labelStyle={styles.dropdownItem}
+            onPress={async () => {
+              const _shiftList = await getShiftList();
+              const isCashierOpen = _shiftList?.some((x) => x.status === "open") ?? false;
+              if (isCashierOpen) {
+                navigation.navigate("CashierScreen");
+              } else {
+                Toast.show({
+                  text1: "Access Denied!",
+                  text2: `Silahkan buka kasir outlet ${selectedOutlet?.nama} terlebih dahulu`,
+                  type: "error",
+                });
+                navigation.navigate("OpenShiftScreen");
+              }
+            }}
+            icon={() => <MaterialCommunityIcons name="point-of-sale" size={18} color="#666" />}
+          />
+          {/* <DrawerItem label="Input Penjualan" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("SaleInputScreen")} icon={() => <MaterialCommunityIcons name="plus" size={18} color="#666" />} /> */}
+          <DrawerItem
+            label="Data Penjualan Kasir"
+            labelStyle={styles.dropdownItem}
+            onPress={async () => {
+              const _shiftList = await getShiftList();
+              const isCashierOpen = _shiftList?.some((x) => x.status === "open") ?? false;
+              if (isCashierOpen) {
+                navigation.navigate("DataSalesCashierScreen");
+              } else {
+                Toast.show({
+                  text1: "Access Denied!",
+                  text2: `Silahkan buka kasir outlet ${selectedOutlet?.nama} terlebih dahulu`,
+                  type: "error",
+                });
+                navigation.navigate("OpenShiftScreen");
+              }
+            }}
+            icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={18} color="#666" />}
+          />
         </View>
       )}
 
-      <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenReturnSales(!openReturnSales)}>
+      {/* <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenReturnSales(!openReturnSales)}>
         <MaterialCommunityIcons name="clock-time-five" size={18} color="#666" />
         <Text style={styles.dropdownHeaderText}>Retur Penjualan</Text>
         <MaterialCommunityIcons name={openReturnSales ? "chevron-up" : "chevron-down"} size={18} color={colors.dark} style={{ marginLeft: "auto" }} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
-      {openReturnSales && (
+      {/* {openReturnSales && (
         <View style={styles.dropdownList}>
           <DrawerItem label="Data Retur" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("DataReturnScreen")} icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={18} color="#666" />} />
           <DrawerItem label="Tukar Barang" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ExchangeGoodsScreen")} icon={() => <FontAwesome5 name="exchange-alt" size={18} color="#666" />} />
           <DrawerItem label="Pengembalian Dana" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ReturnFundsScreen")} icon={() => <MaterialCommunityIcons name="cash" size={18} color="#666" />} />
         </View>
-      )}
+      )} */}
 
       <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenShift(!openShift)}>
         <MaterialCommunityIcons name="clock-time-five" size={18} color="#666" />
@@ -112,7 +180,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
         <View style={styles.dropdownList}>
           <DrawerItem label="Data Shift" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("DataShiftScreen")} icon={() => <MaterialCommunityIcons name="clock-time-five" size={18} color="#666" />} />
           <DrawerItem label="Buka Shift" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("OpenShiftScreen")} icon={() => <MaterialCommunityIcons name="play" size={18} color="#666" />} />
-          <DrawerItem label="Petty Cash" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("PettyCashScreen")} icon={() => <MaterialCommunityIcons name="cash" size={18} color="#666" />} />
+          {/* <DrawerItem label="Petty Cash" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("PettyCashScreen")} icon={() => <MaterialCommunityIcons name="cash" size={18} color="#666" />} /> */}
         </View>
       )}
 

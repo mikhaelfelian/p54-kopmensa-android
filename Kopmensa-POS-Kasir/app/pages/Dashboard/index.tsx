@@ -6,7 +6,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { colors } from "@/constants/constants";
 import { LineChart, PieChart } from "react-native-gifted-charts";
 import Gap from "@/components/Gap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsLoading } from "@/app/redux/LoadingReducer";
 import { GetDashboardBasicMetrics, GetMonthlySales, GetPerformanceMetrics, GetRecentTransaction, GetSalesByCategory, GetTopProducts } from "@/app/services/sales";
 import { SalesMonthlyTarget } from "@/app/models/sales-monthly-target";
@@ -16,6 +16,10 @@ import { BasicMetricItem, BasicMetrics } from "@/app/models/basic-metric";
 import { SalesByCategory } from "@/app/models/sales-by-category";
 import { TopProduct } from "@/app/models/top-product";
 import { RecentTransaction } from "@/app/models/recent-transaction";
+import { Shift } from "@/app/models/shift";
+import { GetShiftList } from "@/app/services/shift";
+import { RootState } from "@/app/redux/store";
+import Toast from "react-native-toast-message";
 
 interface SalesChartPoint {
   label: string;
@@ -24,7 +28,7 @@ interface SalesChartPoint {
 
 const DashboardScreen: React.FC<any> = ({ navigation }) => {
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
+  const selectedOutlet = useSelector((state: RootState) => state.selectedOutlet.selected);
   const { width } = Dimensions.get("window");
   const [salesChartData, setSalesChartData] = useState<SalesChartPoint[]>([]);
   const [monthlySalesTargetData, setMonthlySalesTargetData] = useState<SalesMonthlyTarget>();
@@ -164,6 +168,33 @@ const DashboardScreen: React.FC<any> = ({ navigation }) => {
       setRcentPurchases(response?.data?.recent_purchases ?? []);
     } catch (error) {
       console.error("getTopProducts", error);
+    }
+  };
+
+  const getShiftList = async () => {
+    try {
+      dispatch(setIsLoading(true));
+      const outletID = selectedOutlet ? selectedOutlet.id.toString() : "";
+      let page = 1;
+      let allShifts: Shift[] | ((prevState: Shift[]) => Shift[]) = [];
+
+      while (true) {
+        const response = await GetShiftList(outletID, page.toString());
+
+        if (!response?.items || response.items.length === 0) {
+          break;
+        }
+
+        allShifts = [...allShifts, ...response.items];
+
+        page++;
+      }
+
+      return allShifts;
+    } catch (error) {
+      console.error("getShiftList error", error);
+    } finally {
+      dispatch(setIsLoading(false));
     }
   };
 
@@ -331,7 +362,22 @@ const DashboardScreen: React.FC<any> = ({ navigation }) => {
             </View>
           ))}
 
-          <TouchableOpacity onPress={() => navigation.navigate("CashierScreen")}>
+          <TouchableOpacity
+            onPress={async () => {
+              const _shiftList = await getShiftList();
+              const isCashierOpen = _shiftList?.some((x) => x.status === "open") ?? false;
+              if (isCashierOpen) {
+                navigation.navigate("CashierScreen");
+              } else {
+                Toast.show({
+                  text1: "Access Denied!",
+                  text2: `Silahkan buka kasir outlet ${selectedOutlet?.nama} terlebih dahulu`,
+                  type: "error",
+                });
+                navigation.navigate("OpenShiftScreen");
+              }
+            }}
+          >
             <Text style={styles.linkText}>Lihat Semua Produk</Text>
           </TouchableOpacity>
         </View>
@@ -372,10 +418,26 @@ const DashboardScreen: React.FC<any> = ({ navigation }) => {
 
           {/* Buttons */}
           <View style={styles.buttonRow}>
-            <TouchableOpacity style={[styles.btn, { backgroundColor: colors.green }]}>
+            {/* <TouchableOpacity style={[styles.btn, { backgroundColor: colors.green }]}>
               <Text style={styles.btnText}>Kasir Baru</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.btn, { backgroundColor: colors.red }]}>
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              style={[styles.btn, { backgroundColor: colors.red }]}
+              onPress={async () => {
+                const _shiftList = await getShiftList();
+                const isCashierOpen = _shiftList?.some((x) => x.status === "open") ?? false;
+                if (isCashierOpen) {
+                  navigation.navigate("CashierScreen");
+                } else {
+                  Toast.show({
+                    text1: "Access Denied!",
+                    text2: `Silahkan buka kasir outlet ${selectedOutlet?.nama} terlebih dahulu`,
+                    type: "error",
+                  });
+                  navigation.navigate("OpenShiftScreen");
+                }
+              }}
+            >
               <Text style={styles.btnText}>Pembelian Baru</Text>
             </TouchableOpacity>
           </View>
