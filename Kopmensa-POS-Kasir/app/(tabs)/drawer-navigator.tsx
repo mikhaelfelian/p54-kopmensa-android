@@ -9,7 +9,7 @@ import { Logout } from "../services/session";
 import { clearAllData } from "../utils/localstorage";
 import { CommonActions } from "@react-navigation/native";
 import DashboardScreen from "../pages/Dashboard";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "@/constants/constants";
 import { GetProfile } from "../services/inventory";
 import { Profile } from "../models/profile";
@@ -21,7 +21,9 @@ interface User {
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   const { navigation } = props;
-  const [openCatalog, setOpenCatalog] = useState(false);
+  const [openCashier, setOpenCashier] = useState(false);
+  const [openShift, setOpenShift] = useState(false);
+  const [openReturnSales, setOpenReturnSales] = useState(false);
   const [userData, setUserData] = useState<Profile>();
   const dispatch = useDispatch();
 
@@ -32,15 +34,14 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   const logout = async () => {
     try {
       dispatch(setIsLoading(true));
-      await Logout().finally(async () => {
-        await clearAllData();
+      await clearAllData().finally(() =>
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{ name: "LoginScreen" }],
           })
-        );
-      });
+        )
+      );
     } catch (error) {
       console.error("logout : " + error);
     } finally {
@@ -73,20 +74,45 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
       {/* Default Items */}
       <DrawerItemList {...props} />
 
-      {/* Dropdown Section */}
-      <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenCatalog(!openCatalog)}>
-        <MaterialCommunityIcons name="briefcase" size={18} color="#666" />
-        <Text style={styles.dropdownHeaderText}>Katalog</Text>
-        <MaterialCommunityIcons name={openCatalog ? "chevron-up" : "chevron-down"} size={18} color={colors.dark} style={{ marginLeft: "auto" }} />
+      <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenCashier(!openCashier)}>
+        <MaterialCommunityIcons name="point-of-sale" size={18} color="#666" />
+        <Text style={styles.dropdownHeaderText}>Penjualan</Text>
+        <MaterialCommunityIcons name={openCashier ? "chevron-up" : "chevron-down"} size={18} color={colors.dark} style={{ marginLeft: "auto" }} />
       </TouchableOpacity>
 
-      {openCatalog && (
+      {openCashier && (
         <View style={styles.dropdownList}>
-          <DrawerItem label="Merk" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("MerkScreen")} icon={() => <MaterialCommunityIcons name="tag" size={18} color="#666" />} />
-          <DrawerItem label="Kategori" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("CategoryScreen")} icon={() => <MaterialCommunityIcons name="view-list" size={18} color="#666" />} />
-          <DrawerItem label="Varian" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("VariantScreen")} icon={() => <MaterialCommunityIcons name="palette" size={18} color="#666" />} />
-          <DrawerItem label="Item" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ItemScreen")} icon={() => <MaterialCommunityIcons name="cube" size={18} color="#666" />} />
-          <DrawerItem label="Satuan" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("UnitScreen")} icon={() => <MaterialCommunityIcons name="ruler" size={18} color="#666" />} />
+          <DrawerItem label="Kasir" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("CashierScreen")} icon={() => <MaterialCommunityIcons name="point-of-sale" size={18} color="#666" />} />
+          <DrawerItem label="Input Penjualan" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("SaleInputScreen")} icon={() => <MaterialCommunityIcons name="plus" size={18} color="#666" />} />
+          <DrawerItem label="Data Penjualan Kasir" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("DataSalesCashierScreen")} icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={18} color="#666" />} />
+        </View>
+      )}
+
+      <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenReturnSales(!openReturnSales)}>
+        <MaterialCommunityIcons name="clock-time-five" size={18} color="#666" />
+        <Text style={styles.dropdownHeaderText}>Retur Penjualan</Text>
+        <MaterialCommunityIcons name={openReturnSales ? "chevron-up" : "chevron-down"} size={18} color={colors.dark} style={{ marginLeft: "auto" }} />
+      </TouchableOpacity>
+
+      {openReturnSales && (
+        <View style={styles.dropdownList}>
+          <DrawerItem label="Data Retur" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("DataReturnScreen")} icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={18} color="#666" />} />
+          <DrawerItem label="Tukar Barang" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ExchangeGoodsScreen")} icon={() => <FontAwesome5 name="exchange-alt" size={18} color="#666" />} />
+          <DrawerItem label="Pengembalian Dana" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ReturnFundsScreen")} icon={() => <MaterialCommunityIcons name="cash" size={18} color="#666" />} />
+        </View>
+      )}
+
+      <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenShift(!openShift)}>
+        <MaterialCommunityIcons name="clock-time-five" size={18} color="#666" />
+        <Text style={styles.dropdownHeaderText}>Shift Management</Text>
+        <MaterialCommunityIcons name={openShift ? "chevron-up" : "chevron-down"} size={18} color={colors.dark} style={{ marginLeft: "auto" }} />
+      </TouchableOpacity>
+
+      {openShift && (
+        <View style={styles.dropdownList}>
+          <DrawerItem label="Data Shift" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("DataShiftScreen")} icon={() => <MaterialCommunityIcons name="clock-time-five" size={18} color="#666" />} />
+          <DrawerItem label="Buka Shift" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("OpenShiftScreen")} icon={() => <MaterialCommunityIcons name="play" size={18} color="#666" />} />
+          <DrawerItem label="Petty Cash" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("PettyCashScreen")} icon={() => <MaterialCommunityIcons name="cash" size={18} color="#666" />} />
         </View>
       )}
 

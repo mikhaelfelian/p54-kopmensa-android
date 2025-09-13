@@ -5,11 +5,19 @@ import LoginScreen from "../pages/Login";
 import TabDashboard from "../(tabs)/drawer-navigator";
 import WebViewScreen from "../pages/WebView";
 import DashboardScreen from "../pages/Dashboard";
-import MerkScreen from "../pages/Merk";
-import CategoryScreen from "../pages/Category";
-import VariantScreen from "../pages/Variant";
-import ItemScreen from "../pages/Item";
-import UnitScreen from "../pages/Unit";
+import CashierScreen from "../pages/Cashier";
+import SaleInputScreen from "../pages/SaleInputScreen";
+import DataSalesCashierScreen from "../pages/DataSalesCashier";
+import DataSalesScreen from "../pages/DataSales";
+import DataShiftScreen from "../pages/DataShift";
+import OpenShiftScreen from "../pages/OpenShift";
+import PettyCashScreen from "../pages/PettyCash";
+import DataReturnScreen from "../pages/DataReturn";
+import ExchangeGoodsScreen from "../pages/ExchangeGoods";
+import ReturnFundsScreen from "../pages/ReturnFunds";
+import PettyCashCategoryScreen from "../pages/PettyCashCategory";
+import DetailShiftScreen from "../pages/DetailShift";
+import CloseShiftScreen from "../pages/CloseShift";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,38 +65,94 @@ export default function MainStackNavigator() {
         }}
       />
       <Stack.Screen
-        name="MerkScreen"
-        component={MerkScreen}
+        name="CashierScreen"
+        component={CashierScreen}
         options={{
-          title: "Merk",
+          title: "Kasir",
         }}
       />
       <Stack.Screen
-        name="CategoryScreen"
-        component={CategoryScreen}
+        name="SaleInputScreen"
+        component={SaleInputScreen}
         options={{
-          title: "Kategori",
+          title: "Buat Transaksi Penjualan",
         }}
       />
       <Stack.Screen
-        name="VariantScreen"
-        component={VariantScreen}
+        name="DataSalesCashierScreen"
+        component={DataSalesCashierScreen}
         options={{
-          title: "Varian",
+          title: "Kasir - Transaksi Penjualan",
         }}
       />
       <Stack.Screen
-        name="ItemScreen"
-        component={ItemScreen}
+        name="DataSalesScreen"
+        component={DataSalesScreen}
         options={{
-          title: "Item",
+          title: "Data Penjualan",
         }}
       />
       <Stack.Screen
-        name="UnitScreen"
-        component={UnitScreen}
+        name="DataShiftScreen"
+        component={DataShiftScreen}
         options={{
-          title: "Satuan",
+          title: "Shift Manajemen",
+        }}
+      />
+      <Stack.Screen
+        name="OpenShiftScreen"
+        component={OpenShiftScreen}
+        options={{
+          title: "Buka Shift",
+        }}
+      />
+      <Stack.Screen
+        name="PettyCashScreen"
+        component={PettyCashScreen}
+        options={{
+          title: "Petty Cash",
+        }}
+      />
+      <Stack.Screen
+        name="DataReturnScreen"
+        component={DataReturnScreen}
+        options={{
+          title: "Data Retur Penjualan",
+        }}
+      />
+      <Stack.Screen
+        name="ExchangeGoodsScreen"
+        component={ExchangeGoodsScreen}
+        options={{
+          title: "Retur Penjualan - Tukar Barang",
+        }}
+      />
+      <Stack.Screen
+        name="ReturnFundsScreen"
+        component={ReturnFundsScreen}
+        options={{
+          title: "Daftar Permintaan Refunds",
+        }}
+      />
+      <Stack.Screen
+        name="PettyCashCategoryScreen"
+        component={PettyCashCategoryScreen}
+        options={{
+          title: "Kategori Petty Cash",
+        }}
+      />
+      <Stack.Screen
+        name="DetailShiftScreen"
+        component={DetailShiftScreen}
+        options={{
+          title: "Detail Shift",
+        }}
+      />
+      <Stack.Screen
+        name="CloseShiftScreen"
+        component={CloseShiftScreen}
+        options={{
+          title: "Close Shift",
         }}
       />
     </Stack.Navigator>

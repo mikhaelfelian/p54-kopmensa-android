@@ -6,6 +6,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/images/logo-white-bg.png",
+    "orientation": "landscape",
     "ios": {
       "supportsTablet": true
     },

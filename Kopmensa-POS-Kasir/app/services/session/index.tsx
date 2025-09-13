@@ -4,7 +4,7 @@ import { isNotNullOrEmpty } from "@/app/utils/checker";
 export const Login = async (body: string) => {
   const { data } = await api({
     method: "POST",
-    url: "/api/anggota/login",
+    url: "/api/pos/login",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },

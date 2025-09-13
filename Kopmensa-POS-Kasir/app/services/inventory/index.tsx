@@ -1,3 +1,4 @@
+import { getData } from "@/app/utils/localstorage";
 import api from "../base";
 import { isNotNullOrEmpty } from "@/app/utils/checker";
 
@@ -63,6 +64,19 @@ export const GetOutlets = async (page: string, perPage: string) => {
 
 export const GetProfile = async () => {
   const url = `/api/anggota/profile`;
+
+  const { data } = await api({
+    method: "GET",
+    url: url,
+  });
+
+  return data;
+};
+
+export const GetTransaction = async () => {
+  const userData = await getData("userData");
+
+  const url = `/api/pos/transaksi/${userData?.id}`;
 
   const { data } = await api({
     method: "GET",

@@ -6,8 +6,11 @@ import { expo } from "../../../app.json";
 import { getData } from "../../utils/localstorage";
 import NetInfo from "@react-native-community/netinfo";
 import Gap from "@/components/Gap";
+import { useDispatch } from "react-redux";
+import { setSelectedOutlet } from "@/app/redux/OutletReducer";
 
 const SplashScreen: React.FC = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const appName = expo.name;
   const appVersion = expo.version;
@@ -19,8 +22,10 @@ const SplashScreen: React.FC = () => {
         const unsubscribe = NetInfo.addEventListener(async (state) => {
           if (state.isConnected) {
             const response = await getData("authToken");
+            const selectedOutlet = await getData("selectedOutlet");
 
             if (response != null) {
+              if (selectedOutlet != null) dispatch(setSelectedOutlet(selectedOutlet));
               navigation.navigate("TabDashboard");
             } else {
               navigation.navigate("LoginScreen");

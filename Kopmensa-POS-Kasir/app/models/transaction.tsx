@@ -1,0 +1,67 @@
+export interface TransactionDetailItem {
+  id: number;
+  id_penjualan: number;
+  id_item: number;
+  id_satuan: number;
+  id_kategori: number;
+  id_merk: number;
+  created_at: string;
+  updated_at: string;
+  no_nota: string;
+  kode: string;
+  produk: string;
+  satuan: string;
+  keterangan: string | null;
+  harga: number;
+  harga_beli: number;
+  jml: number;
+  jml_satuan: number;
+  disk1: number;
+  disk2: number;
+  disk3: number;
+  diskon: number;
+  potongan: number;
+  subtotal: number;
+  status: number;
+}
+
+export interface TransactionItem {
+  id: number;
+  id_user: number;
+  id_sales: number;
+  id_pelanggan: number;
+  id_gudang: number;
+  no_nota: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  tgl_bayar: string;
+  tgl_masuk: string;
+  tgl_keluar: string;
+  jml_total: number;
+  jml_biaya: number;
+  jml_ongkir: number;
+  jml_retur: number;
+  diskon: number;
+  jml_diskon: number;
+  jml_subtotal: number;
+  ppn: number;
+  jml_ppn: number;
+  jml_gtotal: number;
+  jml_bayar: number;
+  jml_kembali: number;
+  jml_kurang: number;
+  disk1: number;
+  jml_disk1: number;
+  disk2: number;
+  jml_disk2: number;
+  disk3: number;
+  jml_disk3: number;
+  metode_bayar: string;
+  status: string;
+  status_nota: string;
+  status_ppn: string;
+  status_bayar: string;
+  status_retur: string;
+  details: TransactionDetailItem[];
+}

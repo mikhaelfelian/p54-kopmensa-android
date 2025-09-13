@@ -4,8 +4,8 @@ import styles from "./styles";
 import LoadingScreen from "@/components/LoadingScreen";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
-const ItemScreen: React.FC<any> = ({ navigation }) => {
+const DataSalesScreen: React.FC<any> = ({ navigation }) => {
   return <View style={styles.container}></View>;
 };
 
-export default ItemScreen;
+export default DataSalesScreen;

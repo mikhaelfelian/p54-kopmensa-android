@@ -17,6 +17,9 @@ import { GetOutlets } from "@/app/services/inventory";
 import BottomSheet from "@devvie/bottom-sheet";
 import BottomSheetListing from "@/components/BottomSheetListing";
 import { OutletItem } from "@/app/models/outlet";
+import DeviceInfo from "react-native-device-info";
+import { NetworkInfo } from "react-native-network-info";
+import { setSelectedOutlet } from "@/app/redux/OutletReducer";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -26,7 +29,7 @@ const LoginScreen: React.FC = () => {
   const [emailOrUsernameError, setEmailOrUsernameError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
-  const [selectedOutlet, setSelectedOutlet] = useState<OutletItem>();
+  const [selectedOutletLogin, setSelectedOutletLogin] = useState<OutletItem>();
   const [outletList, setOutletList] = useState<OutletItem[]>([]);
   const outletSheetRef = useRef<React.ElementRef<typeof BottomSheet>>(null);
 
@@ -54,10 +57,17 @@ const LoginScreen: React.FC = () => {
       checkForm();
 
       if (isValidForm) {
+        const _deviceID = DeviceInfo.getUniqueId();
+        const _deviceName = await DeviceInfo.getDeviceName();
+        const _ipAddress = await NetworkInfo.getIPV4Address();
+
         const _param = {
           user: emailOrUsername,
           pass: password,
-          outlet: selectedOutlet?.id,
+          outlet: selectedOutletLogin?.id,
+          device_id: _deviceID,
+          device_name: _deviceName,
+          device_ip: _ipAddress,
         };
         const param = toUrlEncoded(_param);
 
@@ -65,6 +75,7 @@ const LoginScreen: React.FC = () => {
         await Login(param)
           .then(async (response) => {
             if (response != null && response?.token != null && response?.data != null) {
+              await storeData("selectedOutlet", selectedOutletLogin);
               await storeData("authToken", response?.token);
               await storeData("userData", response?.data).then(() => navigation.navigate("TabDashboard"));
             } else {
@@ -129,10 +140,6 @@ const LoginScreen: React.FC = () => {
     }
   };
 
-  const handleForgotPassword = () => {
-    // Handle forgot password logic
-  };
-
   return (
     <View style={styles.container}>
       <Image source={require("../../../assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
@@ -164,16 +171,13 @@ const LoginScreen: React.FC = () => {
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
       <Gap height={14} />
       <TouchableOpacity style={styles.outletWrapper} onPress={() => outletSheetRef.current.open()}>
-        <Text style={labelStyles.normalGray4Label500}>{selectedOutlet != null ? selectedOutlet?.nama : "Select Outlet"}</Text>
+        <Text style={labelStyles.normalGray4Label500}>{selectedOutletLogin != null ? selectedOutletLogin?.nama : "Select Outlet"}</Text>
         <FontAwesome6 name={"sort-down"} color={colors.gray4} size={20} />
       </TouchableOpacity>
       <Gap height={20} />
       <Button mode="contained" style={styles.button} labelStyle={styles.buttonText} onPress={handleLogin}>
         Login
       </Button>
-      <TouchableOpacity onPress={handleForgotPassword}>
-        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-      </TouchableOpacity>
 
       <BottomSheetListing
         sheetRef={outletSheetRef}
@@ -182,7 +186,8 @@ const LoginScreen: React.FC = () => {
         listItem={outletList}
         itemKey={["nama"]}
         onSelectItem={async (item) => {
-          setSelectedOutlet(item);
+          setSelectedOutletLogin(item);
+          dispatch(setSelectedOutlet(item));
           outletSheetRef.current.close();
         }}
       />

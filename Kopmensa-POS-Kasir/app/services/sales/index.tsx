@@ -77,3 +77,24 @@ export const GetRecentTransaction = async () => {
 
   return data;
 };
+
+export const GetPaymentMethods = async () => {
+  const url = `/api/pos/transaksi/payments`;
+
+  const { data } = await api({
+    method: "GET",
+    url: url,
+  });
+
+  return data;
+};
+
+export const CreateTransaction = async (body: string) => {
+  const { data } = await api({
+    method: "POST",
+    url: "/api/pos/transaksi/store",
+    data: body,
+  });
+
+  return data;
+};

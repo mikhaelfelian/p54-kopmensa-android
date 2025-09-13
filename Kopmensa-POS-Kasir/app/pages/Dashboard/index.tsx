@@ -22,7 +22,7 @@ interface SalesChartPoint {
   value: number;
 }
 
-const DashboardScreen = () => {
+const DashboardScreen: React.FC<any> = ({ navigation }) => {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const { width } = Dimensions.get("window");
@@ -331,7 +331,7 @@ const DashboardScreen = () => {
             </View>
           ))}
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("CashierScreen")}>
             <Text style={styles.linkText}>Lihat Semua Produk</Text>
           </TouchableOpacity>
         </View>
@@ -380,7 +380,7 @@ const DashboardScreen = () => {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={[styles.btn, { backgroundColor: colors.gray4, alignSelf: "flex-end" }]}>
+          <TouchableOpacity style={[styles.btn, { backgroundColor: colors.gray4, alignSelf: "flex-end" }]} onPress={() => navigation.navigate("DataSalesCashierScreen")}>
             <Text style={styles.btnText}>Lihat Semua Transaksi</Text>
           </TouchableOpacity>
         </View>
