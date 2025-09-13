@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Modal, View, Text, TouchableOpacity, TextInput, StyleSheet, FlatList } from "react-native";
+import { Modal, View, Text, TouchableOpacity, TextInput, StyleSheet, FlatList, Alert, Platform, PermissionsAndroid } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import styles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,8 @@ import { GetShiftList } from "@/app/services/shift";
 import { Shift } from "@/app/models/shift";
 import Gap from "../Gap";
 import { clearCart } from "@/app/redux/CartReducer";
+import { discoverPrinters, printReceipt } from "@/app/utils/print";
+import { BLEPrinter } from "react-native-thermal-receipt-printer";
 
 interface PaymentMethod {
   id: number;
@@ -35,6 +37,7 @@ interface Props {
 
 const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
   const dispatch = useDispatch();
+  const [noNota, setNoNota] = useState("");
   const [shiftList, setShiftList] = useState<Shift[]>([]);
   const [selectedShift, setSelectedShift] = useState<Shift>();
   const shiftSheetRef = useRef<React.ElementRef<typeof BottomSheet>>(null);
@@ -76,6 +79,9 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
   const remain = Math.max(0, subtotal - discount - totalPay);
   const cashback = subtotal - discount - totalPay < 0 ? Math.abs(subtotal - discount - totalPay) : 0;
 
+  const printerSheetRef = useRef<any>(null);
+  const [pairedPrinters, setPairedPrinters] = useState<any[]>([]);
+
   useEffect(() => {
     setMethods([
       {
@@ -99,6 +105,7 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
 
   const fetchData = async () => {
     try {
+      setNoNota(generateRandomString());
       await Promise.all([getPayments(), getShiftList()]);
     } catch (error) {
       console.log("fetchData : " + error);
@@ -159,7 +166,6 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
       dispatch(setIsLoading(true));
 
       const userData = await getData("userData");
-      const _noNota = generateRandomString();
 
       let _cart: CartSubmit[] = [];
       let _hist: HistSubmit[] = [];
@@ -170,7 +176,7 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
           id_satuan: item.id,
           id_kategori: item.id_kategori,
           id_merk: item.id_merk,
-          no_nota: _noNota,
+          no_nota: noNota,
           kode: item.kode,
           produk: item.item,
           satuan: "PCS",
@@ -190,7 +196,7 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
           id_user: userData?.id,
           id_pelanggan: customerID,
           tgl_masuk: dateParser(new Date(), "YYYY-MM-DD HH:mm:ss"),
-          no_nota: _noNota,
+          no_nota: noNota,
           kode: item.kode,
           item: item.item,
           nominal: item?.harga_jual,
@@ -206,7 +212,7 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
       methods.forEach((item) => {
         const _platformItem = {
           id_platform: item.id,
-          no_nota: _noNota,
+          no_nota: noNota,
           platform: "platform",
           keterangan: item.note,
           nominal: item.amount,
@@ -221,7 +227,7 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
         id_pelanggan: customerID !== "" ? customerID : "1",
         id_shift: selectedShift?.shift_code,
         id_gudang: selectedOutlet?.id,
-        no_nota: _noNota,
+        no_nota: noNota,
         tgl_masuk: dateParser(new Date(), "YYYY-MM-DD HH:mm:ss"),
         tgl_bayar: dateParser(new Date(), "YYYY-MM-DD HH:mm:ss"),
         jml_total: subtotal,
@@ -269,6 +275,44 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
       dispatch(setIsLoading(false));
     }
   };
+
+  const onProceedPrint = async () => {
+    try {
+      const hasPermission = await requestBluetoothPermissions();
+      if (!hasPermission) {
+        Alert.alert("Permission Denied", "Bluetooth permission is required");
+        return;
+      }
+
+      const devices = await discoverPrinters();
+      if (!devices || devices.length === 0) {
+        Alert.alert("No Printer Found", "Please make sure your printer is ON and paired in Bluetooth settings");
+        return;
+      }
+
+      setPairedPrinters(devices);
+      printerSheetRef.current.open();
+    } catch (err) {
+      console.error("❌ Print Init Error:", err);
+    }
+  };
+
+  async function requestBluetoothPermissions() {
+    if (Platform.OS === "android") {
+      if (Platform.Version >= 31) {
+        const granted = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN, PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT, PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
+        return (
+          granted["android.permission.BLUETOOTH_SCAN"] === PermissionsAndroid.RESULTS.GRANTED &&
+          granted["android.permission.BLUETOOTH_CONNECT"] === PermissionsAndroid.RESULTS.GRANTED &&
+          granted["android.permission.ACCESS_FINE_LOCATION"] === PermissionsAndroid.RESULTS.GRANTED
+        );
+      } else {
+        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+    }
+    return true;
+  }
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -375,7 +419,7 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
               <FontAwesome name="save" color="#fff" />
               <Text style={styles.btnText}> Draft</Text>
             </TouchableOpacity> */}
-            <TouchableOpacity style={[styles.btn, { backgroundColor: "teal" }]}>
+            <TouchableOpacity style={[styles.btn, { backgroundColor: "teal" }]} onPress={onProceedPrint}>
               <FontAwesome name="print" color="#fff" />
               <Text style={styles.btnText}> Print</Text>
             </TouchableOpacity>
@@ -429,6 +473,27 @@ const PaymentModal: React.FC<Props> = ({ visible, onClose, customerID }) => {
         onSelectItem={async (item) => {
           shiftSheetRef.current.close();
           setSelectedShift(item);
+        }}
+      />
+
+      <BottomSheetListing
+        sheetRef={printerSheetRef}
+        title={"Pilih Printer"}
+        isSearchQuery={false}
+        listItem={pairedPrinters}
+        itemKey={["name"]}
+        onSelectItem={async (device) => {
+          printerSheetRef.current.close();
+
+          try {
+            await BLEPrinter.connectPrinter(device.inner_mac_address);
+            console.log("✅ Connected to printer:", device.device_name);
+
+            await printReceipt(cart, noNota);
+          } catch (err) {
+            console.error("❌ Printer Connection Error:", err);
+            Alert.alert("Error", "Failed to connect to printer");
+          }
         }}
       />
     </Modal>

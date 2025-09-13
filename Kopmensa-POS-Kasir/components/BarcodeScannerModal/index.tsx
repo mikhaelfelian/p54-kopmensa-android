@@ -23,7 +23,7 @@ const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({ visible, onCl
   }, []);
 
   const handleBarCodeScanned = (result: BarCodeScannerResult) => {
-    setScanned(false);
+    setScanned(true);
     onScanResult(result);
   };
 
@@ -42,7 +42,14 @@ const BarcodeScannerModal: React.FC<BarcodeScannerModalProps> = ({ visible, onCl
             <Text style={styles.closeButtonText}>X</Text>
           </TouchableOpacity>
 
-          <View style={styles.scannerContainer}>{!scanned && <BarCodeScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} style={styles.barcodeScanner} />}</View>
+          <View style={styles.scannerContainer}>
+            {!scanned && <BarCodeScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} style={styles.barcodeScanner} />}
+            {scanned && (
+              <View style={styles.scannedOverlay}>
+                <Text style={styles.scannedText}>Scan Complete!</Text>
+              </View>
+            )}
+          </View>
         </View>
       </View>
     </Modal>

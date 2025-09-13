@@ -231,7 +231,7 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
       <Image source={{ uri: item.foto }} style={styles.itemImage} />
       <View style={styles.itemInfo}>
         <Text style={styles.itemName}>{item.item}</Text>
-        <Text style={styles.itemPrice}>Rp. {item.harga_jual?.toLocaleString("id-ID")}</Text>
+        <Text style={styles.itemPrice}>{formatCurrency(item.harga_jual)}</Text>
       </View>
       <Gap width={5} />
       <View style={styles.itemActions}>
@@ -388,10 +388,10 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
                       setQrMember(text);
                     }}
                   />
-                  <TouchableOpacity style={styles.qrIcon} onPress={() => setIsScannerShow(true)}>
+                  {/* <TouchableOpacity style={styles.qrIcon} onPress={() => setIsScannerShow(true)}>
                     <Ionicons name="camera" size={20} color={colors.dark} />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.qrIcon}>
+                  </TouchableOpacity> */}
+                  <TouchableOpacity style={styles.qrIcon} onPress={() => setIsScannerShow(true)}>
                     <Ionicons name="qr-code" size={20} color={colors.dark} />
                   </TouchableOpacity>
                 </View>
