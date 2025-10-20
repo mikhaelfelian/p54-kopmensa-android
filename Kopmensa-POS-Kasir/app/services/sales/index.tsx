@@ -1,3 +1,4 @@
+import { getData } from "@/app/utils/localstorage";
 import api from "../base";
 import { isNotNullOrEmpty } from "@/app/utils/checker";
 
@@ -93,6 +94,32 @@ export const CreateTransaction = async (body: string) => {
   const { data } = await api({
     method: "POST",
     url: "/api/pos/transaksi/store",
+    data: body,
+  });
+
+  return data;
+};
+
+export const GetReturnSales = async () => {
+  const params = new URLSearchParams();
+
+  const userData = await getData("userData");
+  params.append("id_pelanggan", userData?.id);
+
+  const url = `/api/pos/retur-jual?${params.toString()}`;
+
+  const { data } = await api({
+    method: "GET",
+    url: url,
+  });
+
+  return data;
+};
+
+export const CheckVoucher = async (body: string) => {
+  const { data } = await api({
+    method: "POST",
+    url: "/api/pos/transaksi/validate-voucher",
     data: body,
   });
 

@@ -26,7 +26,7 @@ export default class InterceptorManager {
       },
       async (error) => {
         try {
-          if (error.response?.status === 401) {
+          if (error?.response?.status === 401) {
             console.warn("Unauthorized: Token might be expired or invalid.");
 
             await clearAllData().finally(() => {

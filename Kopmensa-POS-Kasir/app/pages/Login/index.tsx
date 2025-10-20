@@ -20,6 +20,7 @@ import { OutletItem } from "@/app/models/outlet";
 import DeviceInfo from "react-native-device-info";
 import { NetworkInfo } from "react-native-network-info";
 import { setSelectedOutlet } from "@/app/redux/OutletReducer";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -87,10 +88,10 @@ const LoginScreen: React.FC = () => {
             }
           })
           .catch((error) => {
-            console.log("Error Response:", error.response.data);
+            console.log("Error Response:", error?.response?.data?.messages?.error || error?.message);
             Toast.show({
               text1: "Login failed!",
-              text2: error.response.data ?? "Please try again later.",
+              text2: error?.response?.data?.messages?.error || error?.message || "Please try again later.",
               type: "error",
             });
           });
@@ -141,57 +142,66 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={require("../../../assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
-      <TextInput
-        label="Email"
-        mode="outlined"
-        value={emailOrUsername}
-        style={{ zIndex: 0 }}
-        onChangeText={(text) => {
-          setEmailOrUsername(text);
-          checkForm();
-        }}
-        error={!!emailOrUsernameError}
-      />
-      {emailOrUsernameError ? <Text style={styles.errorText}>{emailOrUsernameError}</Text> : null}
-      <Gap height={10} />
-      <TextInput
-        label="Password"
-        mode="outlined"
-        secureTextEntry
-        value={password}
-        style={{ zIndex: 0 }}
-        onChangeText={(text) => {
-          setPassword(text);
-          checkForm();
-        }}
-        error={!!passwordError}
-      />
-      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-      <Gap height={14} />
-      <TouchableOpacity style={styles.outletWrapper} onPress={() => outletSheetRef.current.open()}>
-        <Text style={labelStyles.normalGray4Label500}>{selectedOutletLogin != null ? selectedOutletLogin?.nama : "Select Outlet"}</Text>
-        <FontAwesome6 name={"sort-down"} color={colors.gray4} size={20} />
-      </TouchableOpacity>
-      <Gap height={20} />
-      <Button mode="contained" style={styles.button} labelStyle={styles.buttonText} onPress={handleLogin}>
-        Login
-      </Button>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      enableOnAndroid={true}
+      alwaysBounceVertical={false} // ios settings
+      bounces={false} // ios settings
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
+      <View style={styles.container}>
+        <Image source={require("../../../assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
+        <TextInput
+          label="Email"
+          mode="outlined"
+          value={emailOrUsername}
+          style={{ zIndex: 0 }}
+          onChangeText={(text) => {
+            setEmailOrUsername(text);
+            checkForm();
+          }}
+          error={!!emailOrUsernameError}
+        />
+        {emailOrUsernameError ? <Text style={styles.errorText}>{emailOrUsernameError}</Text> : null}
+        <Gap height={10} />
+        <TextInput
+          label="Password"
+          mode="outlined"
+          secureTextEntry
+          value={password}
+          style={{ zIndex: 0 }}
+          onChangeText={(text) => {
+            setPassword(text);
+            checkForm();
+          }}
+          error={!!passwordError}
+        />
+        {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+        <Gap height={14} />
+        <TouchableOpacity style={styles.outletWrapper} onPress={() => outletSheetRef.current.open()}>
+          <Text style={labelStyles.normalGray4Label500}>{selectedOutletLogin != null ? selectedOutletLogin?.nama : "Select Outlet"}</Text>
+          <FontAwesome6 name={"sort-down"} color={colors.gray4} size={20} />
+        </TouchableOpacity>
+        <Gap height={20} />
+        <Button mode="contained" style={styles.button} labelStyle={styles.buttonText} onPress={handleLogin}>
+          Login
+        </Button>
 
-      <BottomSheetListing
-        sheetRef={outletSheetRef}
-        title={"Outlets"}
-        isSearchQuery={false}
-        listItem={outletList}
-        itemKey={["nama"]}
-        onSelectItem={async (item) => {
-          setSelectedOutletLogin(item);
-          dispatch(setSelectedOutlet(item));
-          outletSheetRef.current.close();
-        }}
-      />
-    </View>
+        <BottomSheetListing
+          sheetRef={outletSheetRef}
+          title={"Outlets"}
+          isSearchQuery={false}
+          listItem={outletList}
+          itemKey={["nama"]}
+          onSelectItem={async (item) => {
+            setSelectedOutletLogin(item);
+            dispatch(setSelectedOutlet(item));
+            outletSheetRef.current.close();
+          }}
+        />
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 

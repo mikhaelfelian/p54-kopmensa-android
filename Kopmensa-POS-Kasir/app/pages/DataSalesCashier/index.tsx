@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList, RefreshControl } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList, RefreshControl, Alert, Platform, PermissionsAndroid } from "react-native";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import styles from "./styles";
-import { TransactionItem } from "@/app/models/transaction";
+import { TransactionDetailItem, TransactionItem } from "@/app/models/transaction";
 import { GetTransaction } from "@/app/services/inventory";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsLoading } from "@/app/redux/LoadingReducer";
 import { dateParser } from "@/app/utils/dates";
 import { formatCurrency } from "@/app/utils/currency";
 import { GetPaymentMethods } from "@/app/services/sales";
 import { Payment } from "@/app/models/payment";
 import TransDetailModal from "@/components/TransDetailModal";
+import { discoverPrinters, printReceipt } from "@/app/utils/print";
+import BottomSheetListing from "@/components/BottomSheetListing";
+import { BLEPrinter } from "react-native-thermal-receipt-printer";
+import { CartItem, CartState } from "@/app/models/product";
+import { RootState } from "@/app/redux/store";
 
 const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -23,6 +28,11 @@ const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
   const [paymentPlatformCount, setPaymentPlatformCount] = useState(0);
   const [keywords, setKeywords] = useState("");
   const filteredTransaction = keywords?.length > 0 ? transactionList?.filter((x) => x?.no_nota?.toLowerCase()?.includes(keywords?.toLowerCase())) : transactionList;
+  const printerSheetRef = useRef<any>(null);
+  const [pairedPrinters, setPairedPrinters] = useState<any[]>([]);
+  const [printData, setPrintData] = useState<CartState | null>(null);
+  const [printNota, setPrintNota] = useState<string | null>(null);
+  const selectedOutlet = useSelector((state: RootState) => state.selectedOutlet.selected);
 
   useEffect(() => {
     fetchData();
@@ -65,6 +75,88 @@ const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
     }
   };
 
+  const onProceedPrint = async (transaction: TransactionItem) => {
+    try {
+      const hasPermission = await requestBluetoothPermissions();
+      if (!hasPermission) {
+        Alert.alert("Permission Denied", "Bluetooth permission is required");
+        return;
+      }
+
+      const devices = await discoverPrinters();
+      if (!devices || devices.length === 0) {
+        Alert.alert("No Printer Found", "Please make sure your printer is ON and paired in Bluetooth settings");
+        return;
+      }
+
+      const cartData = mapTransactionToCartState(transaction);
+      setPrintData(cartData);
+      setPrintNota(transaction.no_nota);
+
+      setPairedPrinters(devices);
+
+      printerSheetRef.current?.open();
+    } catch (err) {
+      console.error("❌ Print Init Error:", err);
+    }
+  };
+
+  function mapTransactionDetailToCartItem(detail: TransactionDetailItem, transaction: TransactionItem): CartItem {
+    return {
+      id: detail.id_item,
+      id_kategori: detail.id_kategori,
+      id_merk: detail.id_merk,
+      created_at: detail.created_at || transaction.created_at,
+      updated_at: detail.updated_at || transaction.updated_at,
+      merk: null,
+      kategori: "",
+      kode: detail.kode,
+      barcode: "",
+      item: detail.produk,
+      deskripsi: detail.keterangan || "",
+      jml_min: 0,
+      harga_jual: detail.harga,
+      harga_beli: detail.harga_beli,
+      foto: "",
+      options: {
+        harga: [],
+        varian: null,
+        galeri: null,
+      },
+      quantity: detail.jml,
+    };
+  }
+
+  function mapTransactionToCartState(transaction: TransactionItem): CartState {
+    const items: CartItem[] = transaction.details.map((detail) => mapTransactionDetailToCartItem(detail, transaction));
+    const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+
+    return {
+      items,
+      totalItems,
+      totalPrice: transaction.jml_gtotal,
+      tax: transaction.jml_ppn,
+      priceBeforeTax: transaction.jml_subtotal,
+    };
+  }
+
+  async function requestBluetoothPermissions() {
+    if (Platform.OS === "android") {
+      if (Platform.Version >= 31) {
+        const granted = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN, PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT, PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
+        return (
+          granted["android.permission.BLUETOOTH_SCAN"] === PermissionsAndroid.RESULTS.GRANTED &&
+          granted["android.permission.BLUETOOTH_CONNECT"] === PermissionsAndroid.RESULTS.GRANTED &&
+          granted["android.permission.ACCESS_FINE_LOCATION"] === PermissionsAndroid.RESULTS.GRANTED
+        );
+      } else {
+        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+    }
+    return true;
+  }
+
   const renderItem = ({ item, index }: { item: TransactionItem; index: number }) => (
     <View style={styles.tableRow}>
       <View style={styles.colNo}>
@@ -73,10 +165,13 @@ const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
       <View style={styles.colNota}>
         <Text style={styles.boldText}>{item.no_nota}</Text>
         <Text style={styles.subText}>{dateParser(item.created_at, "DD/MM/YYYY HH:mm")}</Text>
-        <Text style={styles.subText}>{!!item?.id_pelanggan ? "Anggota" : "Umum"}</Text>
+        <Text style={styles.subText}>{!!item?.pelanggan ? "Anggota" : "Umum"}</Text>
       </View>
       <View style={styles.colPelanggan}>
-        <Text>{!!item?.id_pelanggan ? "Anggota" : "Umum"}</Text>
+        <Text>{selectedOutlet?.nama}</Text>
+      </View>
+      <View style={styles.colPelanggan}>
+        <Text>{item?.pelanggan}</Text>
       </View>
       <View style={styles.colTotal}>
         <Text>{formatCurrency(item.jml_total)}</Text>
@@ -102,7 +197,7 @@ const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
           >
             <FontAwesome name="eye" size={14} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionBtn, { backgroundColor: "#28a745" }]}>
+          <TouchableOpacity style={[styles.actionBtn, { backgroundColor: "#28a745" }]} onPress={() => onProceedPrint(item)}>
             <FontAwesome name="print" size={14} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -156,6 +251,9 @@ const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
                 <Text style={styles.tableHead}>No. Nota</Text>
               </View>
               <View style={styles.colPelanggan}>
+                <Text style={styles.tableHead}>Outlet</Text>
+              </View>
+              <View style={styles.colPelanggan}>
                 <Text style={styles.tableHead}>Pelanggan</Text>
               </View>
               <View style={styles.colTotal}>
@@ -177,6 +275,7 @@ const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
               renderItem={renderItem}
               keyExtractor={(item: TransactionItem, index: { toString: () => any }) => index.toString()}
               refreshControl={<RefreshControl refreshing={false} onRefresh={fetchData} />}
+              showsVerticalScrollIndicator={false}
             />
           </View>
         </View>
@@ -203,6 +302,31 @@ const DataSalesCashierScreen: React.FC<any> = ({ navigation }) => {
       </View>
 
       <TransDetailModal visible={isTransDetailVisible} onClose={() => setIsTransDetailVisible(false)} transaction={transactionData} />
+
+      <BottomSheetListing
+        sheetRef={printerSheetRef}
+        title={"Pilih Printer"}
+        isSearchQuery={false}
+        listItem={pairedPrinters}
+        itemKey={["name"]}
+        onSelectItem={async (device) => {
+          printerSheetRef.current.close();
+
+          try {
+            await BLEPrinter.connectPrinter(device.inner_mac_address);
+            console.log("✅ Connected to printer:", device.device_name);
+
+            if (printData && printNota) {
+              await printReceipt(printData, printNota);
+            } else {
+              Alert.alert("Error", "No data to print");
+            }
+          } catch (err) {
+            console.error("❌ Printer Connection Error:", err);
+            Alert.alert("Error", "Failed to connect to printer");
+          }
+        }}
+      />
     </View>
   );
 };

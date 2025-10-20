@@ -156,19 +156,19 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
         </View>
       )}
 
-      {/* <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenReturnSales(!openReturnSales)}>
+      <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenReturnSales(!openReturnSales)}>
         <MaterialCommunityIcons name="clock-time-five" size={18} color="#666" />
         <Text style={styles.dropdownHeaderText}>Retur Penjualan</Text>
         <MaterialCommunityIcons name={openReturnSales ? "chevron-up" : "chevron-down"} size={18} color={colors.dark} style={{ marginLeft: "auto" }} />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
-      {/* {openReturnSales && (
+      {openReturnSales && (
         <View style={styles.dropdownList}>
           <DrawerItem label="Data Retur" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("DataReturnScreen")} icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={18} color="#666" />} />
-          <DrawerItem label="Tukar Barang" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ExchangeGoodsScreen")} icon={() => <FontAwesome5 name="exchange-alt" size={18} color="#666" />} />
-          <DrawerItem label="Pengembalian Dana" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ReturnFundsScreen")} icon={() => <MaterialCommunityIcons name="cash" size={18} color="#666" />} />
+          {/* <DrawerItem label="Tukar Barang" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ExchangeGoodsScreen")} icon={() => <FontAwesome5 name="exchange-alt" size={18} color="#666" />} />
+          <DrawerItem label="Permintaan Refund" labelStyle={styles.dropdownItem} onPress={() => navigation.navigate("ReturnFundsScreen")} icon={() => <MaterialCommunityIcons name="cash" size={18} color="#666" />} /> */}
         </View>
-      )} */}
+      )}
 
       <TouchableOpacity style={styles.dropdownHeader} onPress={() => setOpenShift(!openShift)}>
         <MaterialCommunityIcons name="clock-time-five" size={18} color="#666" />

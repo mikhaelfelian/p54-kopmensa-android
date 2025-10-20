@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   summaryLabel: { color: "#fff", fontSize: 12, flex: 1, marginHorizontal: 6 },
 
   // Main + Sidebar
-  mainRow: { flexDirection: "row" },
+  mainRow: { flexDirection: "row", flex: 1 },
   leftContent: { flex: 3, marginRight: 8 },
   sidebar: { flex: 1 },
 

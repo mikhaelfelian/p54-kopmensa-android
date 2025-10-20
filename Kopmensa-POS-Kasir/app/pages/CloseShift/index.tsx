@@ -55,10 +55,10 @@ const CloseShiftScreen: React.FC<any> = ({ route, navigation }) => {
           }
         })
         .catch((error) => {
-          console.log("Error Response:", error.response.data);
+          console.log("Error Response:", error?.response?.data?.messages?.error || error?.message);
           Toast.show({
             text1: "Close Shift failed!",
-            text2: error.response.data?.messages?.error ?? "Please try again later.",
+            text2: error?.response?.data?.messages?.error || error?.message || "Please try again later.",
             type: "error",
           });
         });

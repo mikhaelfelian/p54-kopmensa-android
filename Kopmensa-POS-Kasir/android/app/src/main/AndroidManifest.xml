@@ -11,6 +11,14 @@
   <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <compatible-screens>
+    <screen android:screenSize="large" android:screenDensity="mdpi" />
+    <screen android:screenSize="large" android:screenDensity="hdpi" />
+    <screen android:screenSize="large" android:screenDensity="xhdpi" />
+    <screen android:screenSize="xlarge" android:screenDensity="mdpi" />
+    <screen android:screenSize="xlarge" android:screenDensity="hdpi" />
+    <screen android:screenSize="xlarge" android:screenDensity="xhdpi" />
+  </compatible-screens>
   <queries>
     <intent>
       <action android:name="android.intent.action.VIEW"/>

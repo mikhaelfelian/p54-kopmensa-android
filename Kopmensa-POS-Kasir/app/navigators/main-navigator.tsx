@@ -18,6 +18,7 @@ import ReturnFundsScreen from "../pages/ReturnFunds";
 import PettyCashCategoryScreen from "../pages/PettyCashCategory";
 import DetailShiftScreen from "../pages/DetailShift";
 import CloseShiftScreen from "../pages/CloseShift";
+import DataReturnDetailScreen from "../pages/DataReturnDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -153,6 +154,13 @@ export default function MainStackNavigator() {
         component={CloseShiftScreen}
         options={{
           title: "Close Shift",
+        }}
+      />
+      <Stack.Screen
+        name="DataReturnDetailScreen"
+        component={DataReturnDetailScreen}
+        options={{
+          title: "Detail Retur Penjualan",
         }}
       />
     </Stack.Navigator>

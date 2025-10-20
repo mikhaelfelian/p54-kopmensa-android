@@ -31,9 +31,11 @@ const OpenShiftScreen: React.FC<any> = ({ navigation }) => {
 
       let page = "1";
       let perPage = "10";
+      const _selectedOutlet = await getData("selectedOutlet");
 
       await GetOutlets(page, perPage).then((response) => {
-        setOutletList(response?.outlets ?? []);
+        const _outletList = response?.outlets?.filter((x: OutletItem) => x?.id === _selectedOutlet?.id);
+        setOutletList(_outletList ?? []);
       });
     } catch (error) {
       console.error("getOutlets : ", error);
@@ -80,10 +82,13 @@ const OpenShiftScreen: React.FC<any> = ({ navigation }) => {
           }
         })
         .catch((error) => {
-          console.log("Error Response:", error.response.data);
+          console.log("OpenShift Error:", error);
+
+          const message = error?.response?.data?.messages?.error || error?.message || "An unexpected error occurred. Please try again.";
+
           Toast.show({
             text1: "Open Shift failed!",
-            text2: error.response.data.messages.error ?? "Please try again later.",
+            text2: message,
             type: "error",
           });
         });

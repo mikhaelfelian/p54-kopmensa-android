@@ -63,5 +63,6 @@ export interface TransactionItem {
   status_ppn: string;
   status_bayar: string;
   status_retur: string;
+  pelanggan: string;
   details: TransactionDetailItem[];
 }

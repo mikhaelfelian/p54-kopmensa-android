@@ -1,4 +1,5 @@
-import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native";
+// Imports
+import { NavigationContainer } from "@react-navigation/native";
 import "react-native-reanimated";
 import { Provider, useSelector } from "react-redux";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -10,6 +11,9 @@ import { StatusBar } from "expo-status-bar";
 import { colors } from "@/constants/constants";
 import MainStackNavigator from "./app/navigators/main-navigator";
 import { RootState, store } from "./app/redux/store";
+import { View } from "react-native";
+import { insetsBottomNav } from "./components/insets";
+import { SafeAreaProvider } from "react-native-safe-area-context"; // ✅ NEW
 
 export default function AppContent() {
   useEffect(() => {
@@ -27,10 +31,12 @@ export default function AppContent() {
   }, []);
 
   return (
-    <Provider store={store}>
-      <StatusBar translucent={false} backgroundColor={colors.dark} style="light" />
-      <App />
-    </Provider>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <StatusBar translucent={false} backgroundColor={colors.dark} style="light" />
+        <App />
+      </Provider>
+    </SafeAreaProvider>
   );
 }
 
@@ -39,9 +45,11 @@ const App = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <MainStackNavigator />
-      <LoadingScreen visible={isLoading} />
-      <Toast />
+      <View style={{ flex: 1, paddingBottom: insetsBottomNav() }}>
+        <MainStackNavigator />
+        <LoadingScreen visible={isLoading} />
+        <Toast />
+      </View>
     </NavigationContainer>
   );
 };

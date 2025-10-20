@@ -77,10 +77,6 @@ const DetailShiftScreen: React.FC<any> = ({ navigation, route }) => {
             <FontAwesome name="print" size={16} color="#fff" />
             <Text style={styles.actionText}> Cetak Laporan</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.actionBtn, { backgroundColor: "#007bff" }]}>
-            <FontAwesome name="edit" size={16} color="#fff" />
-            <Text style={styles.actionText}> Edit Shift</Text>
-          </TouchableOpacity>
         </View>
       </View>
 

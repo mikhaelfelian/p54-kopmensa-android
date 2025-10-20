@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     width: "92%",
     padding: 16,
+    maxHeight: "85%",
   },
   header: {
     flexDirection: "row",
@@ -85,9 +86,9 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 8,
     borderRadius: 4,
-    width: 70,
     marginLeft: 6,
     textAlign: "right",
+    paddingHorizontal: 14,
   },
   noteInput: {
     borderWidth: 1,

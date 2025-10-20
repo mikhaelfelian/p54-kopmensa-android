@@ -180,6 +180,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  searchBtn: {
+    backgroundColor: colors.blue4,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 14,
+  },
 });
 
 export default styles;

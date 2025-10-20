@@ -24,6 +24,9 @@ import Toast from "react-native-toast-message";
 import { GetPaymentMethods } from "@/app/services/sales";
 import { Payment } from "@/app/models/payment";
 import PaymentModal from "@/components/PaymentModal";
+import { getData } from "@/app/utils/localstorage";
+import { Shift } from "@/app/models/shift";
+import { GetShiftList } from "@/app/services/shift";
 
 interface ProductCardProps {
   item: Product;
@@ -60,26 +63,61 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
   const [isRemoveCartModalShow, setIsRemoveCartModalShow] = useState(false);
   const [selectedRemoveItem, setSelectedRemoveItem] = useState<CartItem>();
   const [isPaymentModalShow, setIsPaymentModalShow] = useState(false);
+  const [userData, setUserData] = useState<any>();
+  const [scannedMemberName, setScannedMemberName] = useState("");
 
   useEffect(() => {
     searchItemRef.current = searchItem;
   }, [searchItem]);
 
   useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", async () => {
-      await fetchData(searchItemRef.current);
-    });
-
-    return () => {
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  useEffect(() => {
     fetchData();
   }, []);
 
-  const fetchData = async (search: string = "") => {
+  const fetchData = async () => {
+    try {
+      dispatch(setIsLoading(true));
+      await Promise.all([fetchProducts(), getShiftList()]);
+    } catch (error) {
+      console.error("fetchData");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getShiftList = async () => {
+    try {
+      const outletID = selectedOutlet ? selectedOutlet.id.toString() : "";
+      let page = 1;
+      let allItems: any[] | ((prevState: Shift[]) => Shift[]) = [];
+      let hasMoreData = true;
+
+      while (hasMoreData) {
+        const response = await GetShiftList(outletID, page.toString());
+        const items = response?.items || [];
+
+        const openItems = items.filter((item: Shift) => item.status === "open" && item.outlet_id === selectedOutlet?.id);
+
+        if (items.length === 0) {
+          hasMoreData = false;
+        } else {
+          allItems = [...allItems, ...openItems];
+          page += 1;
+        }
+      }
+
+      const _userData = await getData("userData");
+      const _selectedShift = allItems.find((x: any) => Number(x?.user_open_id) === Number(_userData?.id));
+      if (_selectedShift !== null) {
+        _userData.shift_code = _selectedShift?.shift_code;
+        setUserData(_userData);
+      }
+    } catch (error) {
+      console.error("getShiftList error", error);
+    }
+  };
+
+  const fetchProducts = async (search: string = "") => {
     try {
       dispatch(setIsLoading(true));
       setPage(1);
@@ -95,7 +133,7 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
         getCategory(),
       ]);
     } catch (error) {
-      console.error("fetchDataWithSearch = " + error);
+      console.error("fetchProducts = " + error);
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -177,7 +215,7 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
   const handleRefresh = () => {
     setPage(1);
     setHasMore(true);
-    fetchData();
+    fetchProducts();
   };
 
   const onDecreaseItem = (item: CartItem) => {
@@ -210,7 +248,9 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
       dispatch(setIsLoading(true));
       const qr = result?.data;
       if (qr !== null) {
-        setQrMember(qr);
+        const _qr = JSON.parse(qr);
+        setScannedMemberName(_qr?.name);
+        setQrMember(_qr?.id);
       } else {
         Toast.show({
           text1: "Error",
@@ -300,6 +340,10 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
               <Ionicons name="search" size={15} color={colors.dark} />
               <TextInput style={styles.searchField} value={searchItem} onChangeText={(text) => setSearchItem(text)} placeholder="Search" placeholderTextColor={"#96BBD9"} />
             </View>
+            <Gap width={14} />
+            <TouchableOpacity style={styles.searchBtn} onPress={async () => await fetchProducts(searchItemRef.current)}>
+              <Text style={labelStyles.smallLightLabel700}>Search</Text>
+            </TouchableOpacity>
           </View>
 
           <Gap height={14} />
@@ -351,6 +395,15 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
         {/* Right Side */}
         <View style={{ flex: 0.4, paddingHorizontal: 10 }}>
           <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+            {/* Cashier */}
+            <Text style={labelStyles.normalDarkLabel700}>Kasir</Text>
+            <Gap height={5} />
+            <View style={styles.outletDropdown}>
+              <Text>{userData?.first_name}</Text>
+            </View>
+
+            <Gap height={10} />
+
             {/* Outlet */}
             <Text style={labelStyles.normalDarkLabel700}>Outlet</Text>
             <Gap height={5} />
@@ -378,6 +431,12 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
             {mode === "anggota" && (
               <View style={styles.qrSection}>
                 <Text style={labelStyles.smallDarkLabel600}>Scan QR Code Anggota</Text>
+                {scannedMemberName.length > 0 && (
+                  <>
+                    <Gap height={5} />
+                    <Text style={labelStyles.smallDarkLabel400}>{scannedMemberName}</Text>
+                  </>
+                )}
                 <View style={styles.qrInputWrapper}>
                   <TextInput
                     style={styles.qrInput}
@@ -385,6 +444,7 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
                     placeholderTextColor={colors.gray6}
                     value={qrMember}
                     onChangeText={(text) => {
+                      setScannedMemberName("");
                       setQrMember(text);
                     }}
                   />
@@ -495,7 +555,7 @@ const CashierScreen: React.FC<any> = ({ navigation }) => {
 
       <BarcodeScannerModal visible={isScannerShow} onClose={() => setIsScannerShow(false)} onScanResult={onScannerResult} />
 
-      <PaymentModal visible={isPaymentModalShow} onClose={() => setIsPaymentModalShow(false)} customerID={qrMember} />
+      <PaymentModal visible={isPaymentModalShow} onClose={() => setIsPaymentModalShow(false)} customerID={qrMember} shiftCode={userData?.shift_code} />
     </View>
   );
 };
