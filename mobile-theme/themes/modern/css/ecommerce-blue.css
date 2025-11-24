@@ -1,0 +1,110 @@
+/* E-Commerce Blue Color Scheme */
+
+:root {
+	--ecommerce-primary: #1976d2;
+	--ecommerce-primary-dark: #1565c0;
+	--ecommerce-primary-light: #42a5f5;
+	--ecommerce-secondary: #ff9800;
+	--ecommerce-success: #4caf50;
+	--ecommerce-danger: #f44336;
+	--ecommerce-warning: #ff9800;
+	--ecommerce-info: #2196f3;
+}
+
+header {
+	background: var(--ecommerce-primary);
+}
+
+header, header a {
+	color: #ffffff;
+}
+
+.navbar-footer .nav-link.active {
+	color: var(--ecommerce-primary) !important;
+}
+
+.btn-primary {
+	background-color: var(--ecommerce-primary);
+	border-color: var(--ecommerce-primary);
+}
+
+.btn-primary:hover {
+	background-color: var(--ecommerce-primary-dark);
+	border-color: var(--ecommerce-primary-dark);
+}
+
+.product-card-price,
+.cart-item-price,
+.order-total-amount,
+.product-price {
+	color: var(--ecommerce-primary);
+}
+
+.category-icon {
+	color: var(--ecommerce-primary);
+}
+
+.btn-add-to-cart {
+	background: var(--ecommerce-primary);
+}
+
+.btn-buy-now {
+	background: var(--ecommerce-secondary);
+}
+
+.attribute-option.selected {
+	border-color: var(--ecommerce-primary);
+	background: rgba(25, 118, 210, 0.1);
+	color: var(--ecommerce-primary);
+}
+
+.order-status.processing {
+	background: rgba(25, 118, 210, 0.1);
+	color: var(--ecommerce-primary);
+}
+
+.order-status.delivered,
+.order-status.shipped {
+	background: rgba(76, 175, 80, 0.1);
+	color: var(--ecommerce-success);
+}
+
+.order-status.cancelled {
+	background: rgba(244, 67, 54, 0.1);
+	color: var(--ecommerce-danger);
+}
+
+.cart-badge,
+.badge.bg-danger {
+	background-color: var(--ecommerce-danger) !important;
+}
+
+.product-discount {
+	background: var(--ecommerce-danger);
+}
+
+.shipping-address-card.selected,
+.payment-method-card.selected {
+	border-color: var(--ecommerce-primary);
+	background: rgba(25, 118, 210, 0.1);
+}
+
+.payment-method-icon {
+	color: var(--ecommerce-primary);
+}
+
+.btn-place-order {
+	background: var(--ecommerce-success);
+}
+
+.btn-place-order:hover {
+	background: #45a049;
+}
+
+.nav-item-center-container {
+	background: #ffffff;
+}
+
+.nav-item-center-container a {
+	background: var(--ecommerce-primary);
+}

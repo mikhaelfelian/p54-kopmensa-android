@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Profile - E-Commerce Mobile</title>
+	<link rel="shortcut icon" href="assets/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/fontawesome/css/all.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootswatch/cosmo/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap-icons/bootstrap-icons.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/sweetalert2/sweetalert2.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-ecommerce-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-components.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/color-schemes/blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/fonts/poppins.css"/>
+</head>
+<body class="bg-primary">
+	<div class="page-container" id="page-container">
+		<header>
+			<nav class="navbar py-2 px-0" style="height:55px">
+				<div style="width:100%" class="d-flex justify-content-between align-items-center">
+					<a id="btn-menu-mobile" class="nav-link nav-menu-mobile px-4 fs-5" data-bs-toggle="offcanvas" href="#offcanvasExample"><i class="fa fa-bars"></i></a>
+					<h5 class="text-light mb-0">My Profile</h5>
+					<div class="px-4"></div>
+				</div>
+			</nav>
+		</header>
+		
+		<div id="page-content">
+			<div class="container-fluid px-3 mt-3">
+				<div class="bg-light rounded-3 p-4 mb-3 text-center">
+					<img src="assets/images/user/default.png" alt="Avatar" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+					<h5 class="mb-1">QAILA RAMADHANI AYUNDA</h5>
+					<p class="text-muted mb-0">qail978@kopmensa.com</p>
+				</div>
+
+				<div class="list-group">
+					<a href="#" class="list-group-item list-group-item-action">
+						<i class="bi bi-pencil me-3"></i>Edit Profile
+					</a>
+					<a href="qr-anggota.html" class="list-group-item list-group-item-action">
+						<i class="bi bi-qr-code me-3"></i>QR Anggota
+					</a>
+					<a href="#" class="list-group-item list-group-item-action">
+						<i class="bi bi-key me-3"></i>Change Pin
+					</a>
+					<a href="orders.html" class="list-group-item list-group-item-action">
+						<i class="bi bi-receipt me-3"></i>My Orders
+					</a>
+					<a href="#" class="list-group-item list-group-item-action">
+						<i class="bi bi-geo-alt me-3"></i>Shipping Addresses
+					</a>
+					<a href="#" class="list-group-item list-group-item-action">
+						<i class="bi bi-credit-card me-3"></i>Payment Methods
+					</a>
+					<a href="#" class="list-group-item list-group-item-action">
+						<i class="bi bi-heart me-3"></i>Wishlist
+					</a>
+					<a href="#" class="list-group-item list-group-item-action">
+						<i class="bi bi-gear me-3"></i>Settings
+					</a>
+					<a href="#" class="list-group-item list-group-item-action">
+						<i class="bi bi-question-circle me-3"></i>Help & Support
+					</a>
+					<a href="#" class="list-group-item list-group-item-action text-danger" id="btn-logout">
+						<i class="bi bi-box-arrow-right me-3"></i>Log Out
+					</a>
+				</div>
+				
+				<div class="text-center mt-4 mb-5">
+					<p class="text-muted small mb-0">Version 1.0.0</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<nav class="navbar bg-light navbar-footer navbar-expand fixed-bottom shadow">
+		<ul class="navbar-nav nav-justified w-100">
+			<li class="nav-item bg-light"><a href="index.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-home"><i class="bi bi-house-door"></i><span style="font-size:10px">Home</span></a></li>
+			<li class="nav-item bg-light"><a href="orders.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-orders"><i class="bi bi-receipt"></i><span style="font-size:10px">Transaction</span></a></li>
+			<li class="nav-item bg-light"><a href="profile.html" class="nav-link d-flex align-items-center flex-column active" style="padding:10px" id="nav-profile"><i class="bi bi-person"></i><span style="font-size:10px">Profile</span></a></li>
+		</ul>
+	</nav>
+
+	<script type="text/javascript" src="themes/modern/vendors/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/sweetalert2/sweetalert2.min.js"></script>
+	<script type="text/javascript" src="themes/modern/js/main-ecommerce-mobile.js"></script>
+</body>
+</html>
+

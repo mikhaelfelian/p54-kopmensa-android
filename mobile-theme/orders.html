@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Orders - E-Commerce Mobile</title>
+	<link rel="shortcut icon" href="assets/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/fontawesome/css/all.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootswatch/cosmo/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap-icons/bootstrap-icons.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/sweetalert2/sweetalert2.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-ecommerce-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-components.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/color-schemes/blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/fonts/poppins.css"/>
+</head>
+<body class="bg-primary">
+	<div class="page-container" id="page-container">
+		<header>
+			<nav class="navbar py-2 px-0" style="height:55px">
+				<div style="width:100%" class="d-flex justify-content-between align-items-center">
+					<a id="btn-menu-mobile" class="nav-link nav-menu-mobile px-4 fs-5" data-bs-toggle="offcanvas" href="#offcanvasExample"><i class="fa fa-bars"></i></a>
+					<h5 class="text-light mb-0">My Orders</h5>
+					<div class="px-4"></div>
+				</div>
+			</nav>
+		</header>
+		
+		<div id="page-content">
+			<div class="order-history-container">
+				<div class="order-card">
+					<div class="order-header">
+						<div>
+							<div class="order-id">Order #ORD-2024-001</div>
+							<div class="order-date">15 Nov 2024, 10:30 AM</div>
+						</div>
+						<span class="order-status-badge order-status-delivered">Delivered</span>
+					</div>
+					<div class="order-item-list">
+						<div class="order-item-row">
+							<img src="assets/images/noimage.png" alt="Product" class="order-item-image">
+							<div class="order-item-details">
+								<div class="order-item-name">Sample Product 1</div>
+								<div class="order-item-variant">Size: L, Color: Black</div>
+								<div class="order-item-quantity">Qty: 2</div>
+							</div>
+							<div class="order-item-price">Rp 598.000</div>
+						</div>
+					</div>
+					<div class="order-total">
+						<span class="order-total-label">Total</span>
+						<span class="order-total-amount">Rp 623.000</span>
+					</div>
+					<div class="order-actions">
+						<button class="order-action-btn">View Details</button>
+						<button class="order-action-btn primary">Reorder</button>
+					</div>
+				</div>
+
+				<div class="order-card">
+					<div class="order-header">
+						<div>
+							<div class="order-id">Order #ORD-2024-002</div>
+							<div class="order-date">12 Nov 2024, 02:15 PM</div>
+						</div>
+						<span class="order-status-badge order-status-shipped">Shipped</span>
+					</div>
+					<div class="order-item-list">
+						<div class="order-item-row">
+							<img src="assets/images/noimage.png" alt="Product" class="order-item-image">
+							<div class="order-item-details">
+								<div class="order-item-name">Sample Product 2</div>
+								<div class="order-item-variant">Size: M, Color: Blue</div>
+								<div class="order-item-quantity">Qty: 1</div>
+							</div>
+							<div class="order-item-price">Rp 499.000</div>
+						</div>
+					</div>
+					<div class="order-total">
+						<span class="order-total-label">Total</span>
+						<span class="order-total-amount">Rp 524.000</span>
+					</div>
+					<div class="order-actions">
+						<button class="order-action-btn">Track Order</button>
+						<button class="order-action-btn primary">View Details</button>
+					</div>
+				</div>
+
+				<div class="order-card">
+					<div class="order-header">
+						<div>
+							<div class="order-id">Order #ORD-2024-003</div>
+							<div class="order-date">10 Nov 2024, 09:00 AM</div>
+						</div>
+						<span class="order-status-badge order-status-processing">Processing</span>
+					</div>
+					<div class="order-item-list">
+						<div class="order-item-row">
+							<img src="assets/images/noimage.png" alt="Product" class="order-item-image">
+							<div class="order-item-details">
+								<div class="order-item-name">Sample Product 3</div>
+								<div class="order-item-variant">Size: S</div>
+								<div class="order-item-quantity">Qty: 1</div>
+							</div>
+							<div class="order-item-price">Rp 199.000</div>
+						</div>
+					</div>
+					<div class="order-total">
+						<span class="order-total-label">Total</span>
+						<span class="order-total-amount">Rp 224.000</span>
+					</div>
+					<div class="order-actions">
+						<button class="order-action-btn">Cancel Order</button>
+						<button class="order-action-btn primary">View Details</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<nav class="navbar bg-light navbar-footer navbar-expand fixed-bottom shadow">
+		<ul class="navbar-nav nav-justified w-100">
+			<li class="nav-item bg-light"><a href="index.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-home"><i class="bi bi-house-door"></i><span style="font-size:10px">Home</span></a></li>
+			<li class="nav-item bg-light"><a href="products.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-categories"><i class="bi bi-grid"></i><span style="font-size:10px">Categories</span></a></li>
+			<li class="nav-item bg-light"><a href="cart.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-cart"><i class="bi bi-cart3"></i><span style="font-size:10px">Cart</span></a></li>
+			<li class="nav-item bg-light"><a href="orders.html" class="nav-link d-flex align-items-center flex-column active" style="padding:10px" id="nav-orders"><i class="bi bi-receipt"></i><span style="font-size:10px">Orders</span></a></li>
+			<li class="nav-item bg-light"><a href="profile.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-profile"><i class="bi bi-person"></i><span style="font-size:10px">Profile</span></a></li>
+		</ul>
+	</nav>
+
+	<script type="text/javascript" src="themes/modern/vendors/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/sweetalert2/sweetalert2.min.js"></script>
+	<script type="text/javascript" src="themes/modern/js/main-ecommerce-mobile.js"></script>
+</body>
+</html>
+

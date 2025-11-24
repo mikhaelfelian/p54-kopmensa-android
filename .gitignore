@@ -2,7 +2,7 @@
 # Operating Specific Junk Files
 #-------------------------
 
-# OS X
+# OS X 
 .DS_Store
 .AppleDouble
 .LSOverride

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Checkout - E-Commerce Mobile</title>
+	<link rel="shortcut icon" href="assets/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/fontawesome/css/all.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootswatch/cosmo/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap-icons/bootstrap-icons.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/sweetalert2/sweetalert2.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-ecommerce-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-components.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/color-schemes/blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/fonts/poppins.css"/>
+</head>
+<body class="bg-primary">
+	<div class="page-container" id="page-container">
+		<header>
+			<nav class="navbar py-2 px-0" style="height:55px">
+				<div style="width:100%" class="d-flex justify-content-between align-items-center">
+					<a href="cart.html" class="nav-link nav-menu-mobile px-4 fs-5 text-light"><i class="bi bi-arrow-left"></i></a>
+					<h5 class="text-light mb-0">Checkout</h5>
+					<div class="px-4"></div>
+				</div>
+			</nav>
+		</header>
+		
+		<div id="page-content">
+			<div class="checkout-container">
+				<!-- Shipping Address -->
+				<div class="checkout-section">
+					<h4 class="checkout-section-title">Shipping Address</h4>
+					<div class="shipping-address-card selected">
+						<div class="shipping-address-name">John Doe</div>
+						<div class="shipping-address-text">123 Main Street<br>Jakarta, 12345<br>Indonesia</div>
+					</div>
+					<button class="btn-add-address"><i class="bi bi-plus-circle me-2"></i>Add New Address</button>
+				</div>
+
+				<!-- Payment Method -->
+				<div class="checkout-section">
+					<h4 class="checkout-section-title">Payment Method</h4>
+					<div class="payment-method-card selected">
+						<div class="payment-method-icon"><i class="bi bi-credit-card"></i></div>
+						<div class="payment-method-info">
+							<div class="payment-method-name">Credit/Debit Card</div>
+							<div class="payment-method-desc">Visa, Mastercard, etc.</div>
+						</div>
+					</div>
+					<div class="payment-method-card">
+						<div class="payment-method-icon"><i class="bi bi-wallet2"></i></div>
+						<div class="payment-method-info">
+							<div class="payment-method-name">E-Wallet</div>
+							<div class="payment-method-desc">GoPay, OVO, DANA</div>
+						</div>
+					</div>
+					<div class="payment-method-card">
+						<div class="payment-method-icon"><i class="bi bi-bank"></i></div>
+						<div class="payment-method-info">
+							<div class="payment-method-name">Bank Transfer</div>
+							<div class="payment-method-desc">Bank transfer payment</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Order Summary -->
+				<div class="checkout-section">
+					<h4 class="checkout-section-title">Order Summary</h4>
+					<div class="order-summary-item">
+						<span class="order-summary-item-label">Subtotal</span>
+						<span class="order-summary-item-value">Rp 998.000</span>
+					</div>
+					<div class="order-summary-item">
+						<span class="order-summary-item-label">Shipping</span>
+						<span class="order-summary-item-value">Rp 25.000</span>
+					</div>
+					<div class="order-summary-divider"></div>
+					<div class="order-summary-total">
+						<span>Total</span>
+						<span>Rp 1.023.000</span>
+					</div>
+					<button class="btn-place-order">
+						<i class="bi bi-check-circle me-2"></i>Place Order
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="themes/modern/vendors/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/sweetalert2/sweetalert2.min.js"></script>
+	<script type="text/javascript" src="themes/modern/js/main-ecommerce-mobile.js"></script>
+	<script>
+		document.querySelectorAll('.payment-method-card').forEach(card => {
+			card.addEventListener('click', function() {
+				document.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('selected'));
+				this.classList.add('selected');
+			});
+		});
+	</script>
+</body>
+</html>
+

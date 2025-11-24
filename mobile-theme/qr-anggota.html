@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>QR Anggota - E-Commerce Mobile</title>
+	<link rel="shortcut icon" href="assets/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/fontawesome/css/all.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootswatch/cosmo/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap-icons/bootstrap-icons.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/sweetalert2/sweetalert2.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-ecommerce-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-components.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/color-schemes/blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/fonts/poppins.css"/>
+	<style>
+		.qr-container {
+			background: #ffffff;
+			border-radius: 20px;
+			padding: 40px 20px;
+			margin: 20px;
+			text-align: center;
+			box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+		}
+		.qr-code-wrapper {
+			background: #ffffff;
+			border: 8px solid #1976d2;
+			border-radius: 20px;
+			padding: 20px;
+			display: inline-block;
+			margin: 30px 0;
+		}
+		.qr-code {
+			width: 250px;
+			height: 250px;
+			background: #ffffff;
+			border: 2px solid #f0f0f0;
+			border-radius: 12px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 0 auto;
+		}
+		.qr-code-placeholder {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			color: #666;
+		}
+		.member-info {
+			background: #f8f9fa;
+			border-radius: 12px;
+			padding: 20px;
+			margin-top: 30px;
+			text-align: left;
+		}
+		.member-info-item {
+			display: flex;
+			justify-content: space-between;
+			padding: 10px 0;
+			border-bottom: 1px solid #e0e0e0;
+		}
+		.member-info-item:last-child {
+			border-bottom: none;
+		}
+		.member-info-label {
+			color: #666;
+			font-size: 0.9rem;
+		}
+		.member-info-value {
+			font-weight: 600;
+			color: #333;
+		}
+	</style>
+</head>
+<body class="bg-primary">
+	<div class="page-container" id="page-container">
+		<header>
+			<nav class="navbar py-2 px-0" style="height:55px">
+				<div style="width:100%" class="d-flex justify-content-between align-items-center">
+					<a href="profile.html" class="nav-link nav-menu-mobile px-4 fs-5 text-light">
+						<i class="bi bi-arrow-left"></i>
+					</a>
+					<h5 class="text-light mb-0">QR Anggota</h5>
+					<div class="px-4"></div>
+				</div>
+			</nav>
+		</header>
+		
+		<div id="page-content">
+			<div class="qr-container">
+				<h4 class="mb-3">Member QR Code</h4>
+				<p class="text-muted mb-4">Scan this QR code to verify membership</p>
+				
+				<div class="qr-code-wrapper">
+					<div class="qr-code" id="qr-code">
+						<div class="qr-code-placeholder">
+							<!-- QR Code will be generated here -->
+							<canvas id="qr-canvas"></canvas>
+							<div id="qr-fallback" style="display: none;">
+								<i class="bi bi-qr-code" style="font-size: 120px; color: #1976d2; margin-bottom: 15px;"></i>
+								<div style="font-size: 0.85rem; color: #999;">
+									<div style="font-weight: 600; margin-bottom: 5px;">QAILA RAMADHANI AYUNDA</div>
+									<div>Member ID: MEM-2024-001</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="member-info">
+					<div class="member-info-item">
+						<span class="member-info-label">Member Name</span>
+						<span class="member-info-value">QAILA RAMADHANI AYUNDA</span>
+					</div>
+					<div class="member-info-item">
+						<span class="member-info-label">Member ID</span>
+						<span class="member-info-value">MEM-2024-001</span>
+					</div>
+					<div class="member-info-item">
+						<span class="member-info-label">Email</span>
+						<span class="member-info-value">qail978@kopmensa.com</span>
+					</div>
+					<div class="member-info-item">
+						<span class="member-info-label">Status</span>
+						<span class="member-info-value text-success">Active</span>
+					</div>
+				</div>
+
+				<button class="btn btn-primary mt-4" onclick="downloadQR()">
+					<i class="bi bi-download me-2"></i>Download QR Code
+				</button>
+				<button class="btn btn-outline-primary mt-2" onclick="shareQR()">
+					<i class="bi bi-share me-2"></i>Share QR Code
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="themes/modern/vendors/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/sweetalert2/sweetalert2.min.js"></script>
+	<script>
+		// Generate QR Code using a simple library or placeholder
+		// Using QRCode.js library (you may need to include it, or use an online service)
+		
+		function generateQRCode() {
+			const canvas = document.getElementById('qr-canvas');
+			const qrFallback = document.getElementById('qr-fallback');
+			
+			// QR Code data
+			const qrData = JSON.stringify({
+				name: "QAILA RAMADHANI AYUNDA",
+				memberId: "MEM-2024-001",
+				email: "qail978@kopmensa.com"
+			});
+			
+			// Try to use QRCode.js if available, otherwise show fallback
+			if (typeof QRCode !== 'undefined') {
+				QRCode.toCanvas(canvas, qrData, {
+					width: 250,
+					margin: 2,
+					color: {
+						dark: '#1976d2',
+						light: '#ffffff'
+					}
+				}, function (error) {
+					if (error) {
+						canvas.style.display = 'none';
+						qrFallback.style.display = 'flex';
+					}
+				});
+			} else {
+				// Use online QR code API as fallback
+				const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(qrData);
+				const img = document.createElement('img');
+				img.src = qrUrl;
+				img.style.width = '100%';
+				img.style.height = '100%';
+				img.style.objectFit = 'contain';
+				canvas.parentNode.replaceChild(img, canvas);
+			}
+		}
+
+		// Download QR Code
+		function downloadQR() {
+			const canvas = document.getElementById('qr-canvas');
+			const img = canvas.querySelector('img');
+			
+			if (img) {
+				const link = document.createElement('a');
+				link.download = 'qr-anggota.png';
+				link.href = img.src;
+				link.click();
+			} else if (canvas && canvas.toDataURL) {
+				const link = document.createElement('a');
+				link.download = 'qr-anggota.png';
+				link.href = canvas.toDataURL();
+				link.click();
+			} else {
+				if (typeof Swal !== 'undefined') {
+					Swal.fire({
+						icon: 'info',
+						title: 'Download',
+						text: 'Please use the share function or take a screenshot',
+						confirmButtonText: 'OK'
+					});
+				}
+			}
+		}
+
+		// Share QR Code
+		function shareQR() {
+			if (navigator.share) {
+				navigator.share({
+					title: 'QR Anggota',
+					text: 'Member QR Code - QAILA RAMADHANI AYUNDA',
+					url: window.location.href
+				}).catch(err => console.log('Error sharing', err));
+			} else {
+				if (typeof Swal !== 'undefined') {
+					Swal.fire({
+						icon: 'info',
+						title: 'Share',
+						text: 'Copy this link: ' + window.location.href,
+						confirmButtonText: 'OK'
+					});
+				}
+			}
+		}
+
+		// Generate QR code on page load
+		$(document).ready(function() {
+			// Use online QR code service
+			const qrData = JSON.stringify({
+				name: "QAILA RAMADHANI AYUNDA",
+				memberId: "MEM-2024-001",
+				email: "qail978@kopmensa.com"
+			});
+			
+			const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + encodeURIComponent(qrData) + '&color=1976d2&bgcolor=ffffff';
+			const img = document.createElement('img');
+			img.src = qrUrl;
+			img.alt = 'QR Code';
+			img.style.width = '100%';
+			img.style.height = '100%';
+			img.style.objectFit = 'contain';
+			img.onerror = function() {
+				document.getElementById('qr-canvas').style.display = 'none';
+				document.getElementById('qr-fallback').style.display = 'flex';
+			};
+			
+			const canvas = document.getElementById('qr-canvas');
+			if (canvas) {
+				canvas.parentNode.replaceChild(img, canvas);
+			}
+		});
+	</script>
+</body>
+</html>
+

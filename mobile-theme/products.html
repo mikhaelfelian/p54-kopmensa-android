@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Products - E-Commerce Mobile</title>
+	<link rel="shortcut icon" href="assets/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/fontawesome/css/all.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootswatch/cosmo/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/bootstrap-icons/bootstrap-icons.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/vendors/sweetalert2/sweetalert2.min.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/layout-ecommerce-mobile.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-components.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/color-schemes/blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/ecommerce-blue.css"/>
+	<link rel="stylesheet" type="text/css" href="themes/modern/css/fonts/poppins.css"/>
+</head>
+<body class="bg-primary">
+	<div class="page-container" id="page-container">
+		<header>
+			<nav class="navbar py-2 px-0" style="height:55px">
+				<div style="width:100%" class="d-flex justify-content-between align-items-center">
+					<a id="btn-menu-mobile" class="nav-link nav-menu-mobile px-4 fs-5" data-bs-toggle="offcanvas" href="#offcanvasExample"><i class="fa fa-bars"></i></a>
+					<div class="d-flex align-items-center flex-grow-1 mx-3">
+						<div class="input-group" style="max-width: 100%;">
+							<input type="text" class="form-control form-control-sm" id="search-input" placeholder="Cari produk..." style="border-radius: 20px 0 0 20px;">
+							<button class="btn btn-sm btn-light" type="button" id="btn-search" style="border-radius: 0 20px 20px 0;"><i class="bi bi-search"></i></button>
+						</div>
+					</div>
+					<div class="nav-right-panel me-4 position-relative">
+						<a href="cart.html" class="text-light position-relative" style="text-decoration: none;">
+							<i class="bi bi-cart3 fs-5"></i>
+							<span class="badge bg-danger position-absolute top-0 start-100 translate-middle" id="cart-badge" style="font-size: 0.7rem; display: none;">0</span>
+						</a>
+					</div>
+				</div>
+			</nav>
+		</header>
+		
+		<div id="page-content">
+			<div class="container-fluid px-3 mt-3">
+				<!-- Filter Section -->
+				<div class="filter-section mb-3">
+					<div class="row g-2">
+						<div class="col-6">
+							<label class="filter-title small mb-2">Filter Outlet</label>
+							<select class="form-select form-select-sm" id="filter-outlet">
+								<option value="">All Outlets</option>
+								<option value="outlet-1">Outlet Jakarta Pusat</option>
+								<option value="outlet-2">Outlet Bandung</option>
+								<option value="outlet-3">Outlet Surabaya</option>
+								<option value="outlet-4">Outlet Yogyakarta</option>
+								<option value="outlet-5">Outlet Semarang</option>
+								<option value="online">Online Store</option>
+							</select>
+						</div>
+						<div class="col-6">
+							<label class="filter-title small mb-2">Sort by</label>
+							<select class="form-select form-select-sm" id="sort-products">
+								<option value="">Sort by</option>
+								<option value="price-low">Price: Low to High</option>
+								<option value="price-high">Price: High to Low</option>
+								<option value="newest">Newest</option>
+								<option value="popular">Most Popular</option>
+							</select>
+						</div>
+					</div>
+					<div class="mt-2">
+						<button class="btn btn-sm btn-outline-secondary" id="btn-reset-filter">
+							<i class="bi bi-arrow-clockwise me-1"></i>Reset Filter
+						</button>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<h5 class="text-light mb-0">All Products</h5>
+					<small class="text-light" id="product-count">Showing 8 products</small>
+				</div>
+				<div class="product-grid" id="products-container">
+					<div class="product-card" data-outlet="outlet-1" data-price="299000" data-date="2024-01-15"><img src="assets/images/noimage.png" alt="Product" class="product-card-img"><div class="product-card-body"><h6 class="product-card-title">Product 1</h6><div class="product-card-price">Rp 299.000</div><div class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Outlet Jakarta Pusat</div><button class="btn btn-primary btn-sm product-card-btn" onclick="window.location.href='product-detail.html?id=1'">View Details</button></div></div>
+					<div class="product-card" data-outlet="outlet-2" data-price="499000" data-date="2024-01-10"><img src="assets/images/noimage.png" alt="Product" class="product-card-img"><div class="product-card-body"><h6 class="product-card-title">Product 2</h6><div class="product-card-price">Rp 499.000</div><div class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Outlet Bandung</div><button class="btn btn-primary btn-sm product-card-btn" onclick="window.location.href='product-detail.html?id=2'">View Details</button></div></div>
+					<div class="product-card" data-outlet="outlet-1" data-price="199000" data-date="2024-01-20"><img src="assets/images/noimage.png" alt="Product" class="product-card-img"><div class="product-card-body"><h6 class="product-card-title">Product 3</h6><div class="product-card-price">Rp 199.000</div><div class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Outlet Jakarta Pusat</div><button class="btn btn-primary btn-sm product-card-btn" onclick="window.location.href='product-detail.html?id=3'">View Details</button></div></div>
+					<div class="product-card" data-outlet="online" data-price="899000" data-date="2024-01-05"><img src="assets/images/noimage.png" alt="Product" class="product-card-img"><div class="product-card-body"><h6 class="product-card-title">Product 4</h6><div class="product-card-price">Rp 899.000</div><div class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Online Store</div><button class="btn btn-primary btn-sm product-card-btn" onclick="window.location.href='product-detail.html?id=4'">View Details</button></div></div>
+					<div class="product-card" data-outlet="outlet-3" data-price="349000" data-date="2024-01-18"><img src="assets/images/noimage.png" alt="Product" class="product-card-img"><div class="product-card-body"><h6 class="product-card-title">Product 5</h6><div class="product-card-price">Rp 349.000</div><div class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Outlet Surabaya</div><button class="btn btn-primary btn-sm product-card-btn" onclick="window.location.href='product-detail.html?id=5'">View Details</button></div></div>
+					<div class="product-card" data-outlet="outlet-4" data-price="249000" data-date="2024-01-12"><img src="assets/images/noimage.png" alt="Product" class="product-card-img"><div class="product-card-body"><h6 class="product-card-title">Product 6</h6><div class="product-card-price">Rp 249.000</div><div class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Outlet Yogyakarta</div><button class="btn btn-primary btn-sm product-card-btn" onclick="window.location.href='product-detail.html?id=6'">View Details</button></div></div>
+					<div class="product-card" data-outlet="outlet-2" data-price="599000" data-date="2024-01-08"><img src="assets/images/noimage.png" alt="Product" class="product-card-img"><div class="product-card-body"><h6 class="product-card-title">Product 7</h6><div class="product-card-price">Rp 599.000</div><div class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Outlet Bandung</div><button class="btn btn-primary btn-sm product-card-btn" onclick="window.location.href='product-detail.html?id=7'">View Details</button></div></div>
+					<div class="product-card" data-outlet="outlet-5" data-price="179000" data-date="2024-01-22"><img src="assets/images/noimage.png" alt="Product" class="product-card-img"><div class="product-card-body"><h6 class="product-card-title">Product 8</h6><div class="product-card-price">Rp 179.000</div><div class="small text-muted mb-2"><i class="bi bi-geo-alt me-1"></i>Outlet Semarang</div><button class="btn btn-primary btn-sm product-card-btn" onclick="window.location.href='product-detail.html?id=8'">View Details</button></div></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<nav class="navbar bg-light navbar-footer navbar-expand fixed-bottom shadow">
+		<ul class="navbar-nav nav-justified w-100">
+			<li class="nav-item bg-light"><a href="index.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-home"><i class="bi bi-house-door"></i><span style="font-size:10px">Home</span></a></li>
+			<li class="nav-item bg-light"><a href="products.html" class="nav-link d-flex align-items-center flex-column active" style="padding:10px" id="nav-categories"><i class="bi bi-grid"></i><span style="font-size:10px">Categories</span></a></li>
+			<li class="nav-item bg-light"><a href="cart.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-cart"><i class="bi bi-cart3"></i><span style="font-size:10px">Cart</span></a></li>
+			<li class="nav-item bg-light"><a href="orders.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-orders"><i class="bi bi-receipt"></i><span style="font-size:10px">Orders</span></a></li>
+			<li class="nav-item bg-light"><a href="profile.html" class="nav-link d-flex align-items-center flex-column" style="padding:10px" id="nav-profile"><i class="bi bi-person"></i><span style="font-size:10px">Profile</span></a></li>
+		</ul>
+	</nav>
+
+	<script type="text/javascript" src="themes/modern/vendors/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="themes/modern/vendors/sweetalert2/sweetalert2.min.js"></script>
+	<script type="text/javascript" src="themes/modern/js/main-ecommerce-mobile.js"></script>
+	<script>
+		// Filter and Sort Functionality
+		$(document).ready(function() {
+			let allProducts = $('.product-card');
+			const totalProducts = allProducts.length;
+			
+			// Update product count
+			function updateProductCount(count) {
+				$('#product-count').text('Showing ' + count + ' product' + (count !== 1 ? 's' : ''));
+			}
+			
+			updateProductCount(totalProducts);
+			
+			// Filter by outlet
+			$('#filter-outlet').on('change', function() {
+				applyFilters();
+			});
+			
+			// Sort products
+			$('#sort-products').on('change', function() {
+				applyFilters();
+			});
+			
+			// Reset filter
+			$('#btn-reset-filter').on('click', function() {
+				$('#filter-outlet').val('');
+				$('#sort-products').val('');
+				applyFilters();
+			});
+			
+			function applyFilters() {
+				const selectedOutlet = $('#filter-outlet').val();
+				const sortBy = $('#sort-products').val();
+				
+				// Filter by outlet
+				let filteredProducts = allProducts;
+				if (selectedOutlet) {
+					filteredProducts = allProducts.filter(function() {
+						return $(this).data('outlet') === selectedOutlet;
+					});
+					allProducts.hide();
+					filteredProducts.show();
+				} else {
+					allProducts.show();
+					filteredProducts = allProducts;
+				}
+				
+				// Sort products
+				let sortedProducts = filteredProducts.toArray();
+				
+				if (sortBy === 'price-low') {
+					sortedProducts.sort(function(a, b) {
+						return $(a).data('price') - $(b).data('price');
+					});
+				} else if (sortBy === 'price-high') {
+					sortedProducts.sort(function(a, b) {
+						return $(b).data('price') - $(a).data('price');
+					});
+				} else if (sortBy === 'newest') {
+					sortedProducts.sort(function(a, b) {
+						return new Date($(b).data('date')) - new Date($(a).data('date'));
+					});
+				}
+				
+				// Re-arrange products in container if sorted
+				if (sortBy) {
+					const container = $('#products-container');
+					container.empty();
+					$(sortedProducts).appendTo(container);
+					// Re-show all items after sorting
+					container.find('.product-card').show();
+				}
+				
+				// Update product count
+				const visibleCount = filteredProducts.length;
+				updateProductCount(visibleCount);
+			}
+		});
+	</script>
+</body>
+</html>
